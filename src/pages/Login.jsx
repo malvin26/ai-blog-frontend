@@ -169,7 +169,7 @@ const Login = () => {
         console.log("✅ Submit Clicked");
         console.log("API URL =", import.meta.env.VITE_API_URL);
 
-        const apiUrl = `${import.meta.env.VITE_API_URL}/xxx-admin-login`;
+        const apiUrl = `${import.meta.env.VITE_API_URL}/xxx_login`;
 
         console.log("POST URL =", apiUrl);
 
