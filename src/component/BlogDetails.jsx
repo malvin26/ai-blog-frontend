@@ -227,7 +227,7 @@ import AdBox from "../component/AdBox";
 
 const fetchBlog = async (slug) => {
   const res = await axios.get(
-    `${import.meta.env.VITE_API_URL}/${slug}`
+    `${import.meta.env.VITE_API_URL}/blogs/${slug}`
   );
 
   return res.data.blog;
