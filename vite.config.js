@@ -3,8 +3,8 @@ import react, { reactCompilerPreset } from "@vitejs/plugin-react";
 import babel from "@rolldown/plugin-babel";
 import tailwindcss from "@tailwindcss/vite";
 
-// https://vite.dev/config/
 export default defineConfig({
+  base: "/",
   plugins: [
     react(),
     babel({
@@ -12,8 +12,7 @@ export default defineConfig({
     }),
     tailwindcss(),
   ],
-
   build: {
-    outDir: "dist", // Vercel-এর জন্য default "dist" রাখাই ভালো
+    outDir: "dist",
   },
 });
