@@ -21,7 +21,7 @@ const fetchBlogs = async ({ queryKey }) => {
 
 
 	const res = await axios.get(
-		"http://localhost:3000/blogs",
+		`${import.meta.env.VITE_API_URL}/blogs`,
 		{
 			params: {
 				page,

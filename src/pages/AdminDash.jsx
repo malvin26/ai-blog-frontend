@@ -75,7 +75,7 @@ const AdminDash = () => {
             setPublishMsg("");
 
             const res = await axios.get(
-                "http://localhost:3000/xxx-admin-generate",
+                `${import.meta.env.VITE_API_URL}/xxx-admin-generate`,
                 { withCredentials: true }
             );
 
@@ -156,7 +156,7 @@ const AdminDash = () => {
             }
 
             const res = await axios.post(
-                "http://localhost:3000/xxx-admin-publish",
+                `${import.meta.env.VITE_API_URL}/xxx-admin-publish`,
                 { rawContent: payload },
                 { withCredentials: true }
             );
@@ -214,7 +214,7 @@ const AdminDash = () => {
     const handleLogout = async () => {
         try {
             await axios.post(
-                "http://localhost:3000/xxx-admin-logout",
+                `${import.meta.env.VITE_API_URL}/xxx-admin-logout`,
                 {},
                 { withCredentials: true }
             );
