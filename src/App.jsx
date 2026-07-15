@@ -27,7 +27,7 @@ function App() {
       <Route path="/ad-policy" element={<AdPolicy />} />
       <Route path="/contact" element={<Contact />} />
 
-      <Route path="/xxx-admin-login" element={<Login />} />
+      <Route path="/login" element={<Login />} />
 
       <Route element={<AdminProtectedRoute />}>
         <Route
