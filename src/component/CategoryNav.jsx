@@ -43,6 +43,7 @@ const CategoryNav = ({
 
         {categories.map((category) => {
 
+
           const isOpen =
             openCategory === category.name;
 

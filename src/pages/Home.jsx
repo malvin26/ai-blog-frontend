@@ -13,6 +13,7 @@ import BlogCard from "../component/BlogCard";
 import CategoryNav from "../component/CategoryNav";
 import Pagination from "../component/Pagination";
 import SearchBar from "../component/SearchBar";
+import HeroAd from "../component/HeroAd";
 
 const fetchBlogs = async ({ queryKey }) => {
 	const [, page, category, subCategory, search] = queryKey;
@@ -155,7 +156,7 @@ const Home = () => {
 
 	const handleCategory = (cat) => {
 		navigate(
-			`/?category=${encodeURIComponent(cat)}`
+			`/?category=${encodeURIComponent(cat.trim())}`
 		);
 
 		setPage(1);
@@ -167,12 +168,12 @@ const Home = () => {
 	// ================= Sub Category =================
 
 	const handleSubCategory = (cat, sub) => {
-
-
 		const params = new URLSearchParams();
 
-		params.set("category", cat);
-		params.set("subCategory", sub);
+		params.set("category", cat.trim());
+		params.set("subCategory", sub.trim());
+
+		console.log("Params =", params.toString());
 
 		navigate(`/?${params.toString()}`);
 	};
@@ -270,73 +271,9 @@ const Home = () => {
 						min-w-0
 						">
 
+						<HeroAd />
 
 
-						{/* ================= SEARCH ================= */}
-
-						{/* <SearchBar
-							value={search}
-							onSearch={handleSearch}
-						/>
-
-						{(category || subCategory) && (
-
-							<div
-								className="
-                            flex
-                            flex-wrap
-                            gap-2
-                            mt-5
-                        "
-							>
-
-								{category && (
-
-									<span
-										className="
-                                    px-4
-                                    py-2
-                                    rounded-full
-                                    bg-blue-100
-                                    text-blue-700
-                                    dark:bg-blue-900/40
-                                    dark:text-blue-200
-                                    text-sm
-                                "
-									>
-
-										{category}
-
-									</span>
-
-								)}
-
-								{subCategory && (
-
-									<span
-										className="
-                                    px-4
-                                    py-2
-                                    rounded-full
-                                    bg-green-100
-                                    text-green-700
-                                    dark:bg-green-900/40
-                                    dark:text-green-200
-                                    text-sm
-                                "
-									>
-
-										{subCategory}
-
-									</span>
-
-								)}
-
-							</div>
-
-						)} */}
-
-						{/* ================= SEARCH ================= */}
 
 						{/* ================= LOADING ================= */}
 

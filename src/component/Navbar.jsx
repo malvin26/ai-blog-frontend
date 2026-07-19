@@ -176,16 +176,24 @@ const Navbar = ({
                   category.topics?.length > 0 && (
                     <div className="bg-gray-50 dark:bg-gray-800">
 
-                      {category.topics.map((topic) => (
-                        <Link
-                          key={topic}
-                          to={`/?category=${category.name}&subCategory=${topic}`}
-                          onClick={() => setMobileOpen(false)}
-                          className="block py-3 pl-10 pr-5 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
-                        >
-                          {topic}
-                        </Link>
-                      ))}
+                      {category.topics.map((topic) => {
+                        const params = new URLSearchParams();
+
+                        params.set("category", category.name);
+                        params.set("subCategory", topic);
+
+                        return (
+                          <Link
+                            key={topic}
+                            to={`/?${params.toString()}`}
+                            onClick={() => setMobileOpen(false)}
+                            className="block py-3 pl-10 pr-5 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+                          >
+                            {topic}
+                          </Link>
+                        );
+                      })}
+
 
                     </div>
                   )}
