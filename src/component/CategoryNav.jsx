@@ -118,11 +118,7 @@ const CategoryNav = ({
                     <button
                       key={topic}
                       onClick={() => {
-                        console.log(
-                          "SubCategory Click:",
-                          category.name,
-                          topic
-                        );
+
 
                         onSubCategorySelect?.(
                           category.name,

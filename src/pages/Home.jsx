@@ -173,7 +173,7 @@ const Home = () => {
 		params.set("category", cat.trim());
 		params.set("subCategory", sub.trim());
 
-		console.log("Params =", params.toString());
+
 
 		navigate(`/?${params.toString()}`);
 	};
