@@ -74,9 +74,20 @@ const AdminDash = () => {
             setError("");
             setPublishMsg("");
 
+            const token = localStorage.getItem("adminAccessToken");
+
+            if (!token) {
+                navigate("/xxx-admin-login");
+                return;
+            }
+
             const res = await axios.get(
                 `${import.meta.env.VITE_API_URL}/xxx-admin-generate`,
-                { withCredentials: true }
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
             );
 
             const data = res?.data?.data;
@@ -107,10 +118,6 @@ const AdminDash = () => {
                 err?.response?.data?.message ||
                 "Generation failed"
             );
-
-            console.log(err);
-
-
         } finally {
             setLoading(false);
         }
@@ -142,6 +149,13 @@ const AdminDash = () => {
             setError("");
             setPublishMsg("");
 
+            const token = localStorage.getItem("adminAccessToken");
+
+            if (!token) {
+                navigate("/xxx-admin-login");
+                return;
+            }
+
             let payload;
 
             if (typeof content === "string") {
@@ -157,12 +171,15 @@ const AdminDash = () => {
 
             const res = await axios.post(
                 `${import.meta.env.VITE_API_URL}/xxx-admin-publish`,
-                { rawContent: payload },
-                { withCredentials: true }
+                {
+                    rawContent: payload,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
             );
-
-            // console.log(res);
-
 
             if (res.data.success) {
                 setPublishMsg("✅ " + res.data.message);
@@ -171,6 +188,7 @@ const AdminDash = () => {
                 localStorage.removeItem("ai_tokens");
 
                 setContent("");
+
                 setTokens({
                     prompt: 0,
                     completion: 0,
@@ -181,14 +199,13 @@ const AdminDash = () => {
 
         } catch (err) {
             setError(
-                err.data
+                err?.response?.data?.message ||
+                "Publish failed"
             );
         } finally {
             setPublishing(false);
         }
     };
-
-
 
     // =========================
     // CLEAR
