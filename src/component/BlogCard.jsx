@@ -1,110 +1,214 @@
+import { useState } from "react";
 import { Link } from "react-router";
+import { ClipLoader } from "react-spinners";
 
 const BlogCard = ({ blog }) => {
+  const [loading, setLoading] = useState(true);
+  const [imageError, setImageError] = useState(false);
+
+  const imageUrl =
+    blog?.thumbnail?.url ||
+    blog?.featuredImage ||
+    blog?.image ||
+    "";
+
   return (
-    <div
+    <article
       className="
         group
-        bg-white
-        dark:bg-gray-900
-        rounded-2xl
         overflow-hidden
+        rounded-2xl
         border
         border-gray-200
         dark:border-gray-800
+        bg-white
+        dark:bg-gray-900
         shadow-sm
-        hover:shadow-xl
+        hover:shadow-2xl
         transition-all
         duration-300
       "
     >
-      {/* IMAGE */}
-      <div className="relative overflow-hidden">
-        {blog?.featuredImage ? (
-          <img
-            src={blog.featuredImage}
-            alt={blog?.title}
-            className="h-52 w-full object-cover transition duration-500 group-hover:scale-105"
-          />
+      {/* Thumbnail */}
+      <div className="relative h-56 overflow-hidden bg-gray-100 dark:bg-gray-800">
+        {imageUrl && !imageError ? (
+          <>
+            {loading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-white/70 dark:bg-black/40 z-10">
+                <ClipLoader
+                  size={35}
+                  color="#2563eb"
+                />
+              </div>
+            )}
+
+            <img
+              src={imageUrl}
+              alt={blog?.title}
+              loading="lazy"
+              onLoad={() => setLoading(false)}
+              onError={() => {
+                setLoading(false);
+                setImageError(true);
+              }}
+              className={`
+                w-full
+                h-full
+                object-cover
+                duration-500
+                transition-all
+                group-hover:scale-105
+                ${loading
+                  ? "opacity-0"
+                  : "opacity-100"
+                }
+              `}
+            />
+          </>
         ) : (
-          <div className="h-52 w-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500" />
+          <div
+            className="
+              flex
+              h-full
+              w-full
+              items-center
+              justify-center
+              bg-gradient-to-r
+              from-blue-600
+              via-indigo-600
+              to-purple-600
+            "
+          >
+            <div className="text-center text-white">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="mx-auto h-12 w-12 opacity-80"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M4 16l4-4 4 4 6-6 2 2v6H4z"
+                />
+              </svg>
+
+              <p className="mt-2 text-sm font-semibold">
+                No Thumbnail
+              </p>
+            </div>
+          </div>
         )}
 
         {/* Category */}
-        <div className="absolute top-3 left-3">
-          <span className="px-3 py-1 rounded-full bg-blue-600 text-white text-xs font-semibold shadow">
-            {blog?.category}
+        {blog?.category && (
+          <span
+            className="
+              absolute
+              top-3
+              left-3
+              rounded-full
+              bg-blue-600
+              px-3
+              py-1
+              text-xs
+              font-semibold
+              text-white
+              shadow
+            "
+          >
+            {blog.category}
           </span>
-        </div>
+        )}
       </div>
 
-      {/* CONTENT */}
-      <div className="p-5 flex flex-col gap-3">
-
-        {/* Sub Category */}
+      {/* Content */}
+      <div className="flex flex-col gap-3 p-5">
         {blog?.subCategory && (
-          <p className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wide">
+          <p
+            className="
+              text-xs
+              font-bold
+              uppercase
+              tracking-wider
+              text-blue-600
+              dark:text-blue-400
+            "
+          >
             {blog.subCategory}
           </p>
         )}
 
-        {/* Title */}
-        <h2
-          className="
-            text-xl
-            font-bold
-            line-clamp-2
-            text-gray-900
-            dark:text-white
-            group-hover:text-blue-600
-            dark:group-hover:text-blue-400
-            transition
-          "
-        >
-          {blog?.title}
-        </h2>
+        <Link to={`/blog/${blog.slug}`}>
+          <h2
+            className="
+              line-clamp-2
+              text-xl
+              font-bold
+              text-gray-900
+              transition
+              group-hover:text-blue-600
+              dark:text-white
+              dark:group-hover:text-blue-400
+            "
+          >
+            {blog.title}
+          </h2>
+        </Link>
 
-        {/* Description */}
         <p
           className="
+            line-clamp-3
             text-sm
             leading-7
-            line-clamp-3
             text-gray-600
             dark:text-gray-400
           "
         >
-          {blog?.description}
+          {blog.description}
         </p>
 
-        {/* Footer */}
-        <div className="flex items-center justify-between pt-4 mt-2 border-t border-gray-200 dark:border-gray-700">
-
+        <div
+          className="
+            mt-2
+            flex
+            items-center
+            justify-between
+            border-t
+            border-gray-200
+            pt-4
+            dark:border-gray-700
+          "
+        >
           <span className="text-xs text-gray-500 dark:text-gray-400">
             {blog?.publishedAt
-              ? new Date(blog.publishedAt).toLocaleDateString()
+              ? new Date(
+                blog.publishedAt
+              ).toLocaleDateString()
               : "Draft"}
           </span>
 
           <Link
-            to={`/blog/${blog?.slug}`}
+            to={`/blog/${blog.slug}`}
             className="
-              px-4
-              py-2
               rounded-full
               bg-blue-600
-              hover:bg-blue-700
-              text-white
+              px-4
+              py-2
               text-sm
               font-semibold
+              text-white
               transition
+              hover:bg-blue-700
             "
           >
             Read More →
           </Link>
         </div>
       </div>
-    </div>
+    </article>
   );
 };
 
