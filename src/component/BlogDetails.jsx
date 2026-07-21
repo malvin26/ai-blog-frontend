@@ -1,225 +1,8 @@
-
-// import { useParams } from "react-router";
-// import axios from "axios";
-// import { useQuery } from "@tanstack/react-query";
-// import AdBox from "../component/AdBox";
-// import Footer from "./Footer";
-// import Navbar from "./Navbar";
-
-// const fetchBlog = async (slug) => {
-//   const res = await axios.get(
-//     `http://localhost:3000/blogs/${slug}`
-//   );
-//   return res.data.blog;
-// };
-
-// const BlogDetails = () => {
-//   const { slug } = useParams();
-
-//   const {
-//     data: blog,
-//     isLoading,
-//     isError,
-//   } = useQuery({
-//     queryKey: ["blog", slug],
-//     queryFn: () => fetchBlog(slug),
-
-//     staleTime: 1000 * 60 * 10,
-//     gcTime: 1000 * 60 * 30,
-//     retry: 1,
-//   });
-
-//   if (isLoading) {
-//     return (
-//       <div className="text-center py-20">
-//         Loading...
-//       </div>
-//     );
-//   }
-
-//   if (isError || !blog) {
-//     return (
-//       <div className="text-center py-20">
-//         Blog Not Found
-//       </div>
-//     );
-//   }
-
-//   return (
-
-//     <>
-//       <Navbar />
-//       <div className="max-w-4xl mx-auto px-4 py-10">
-
-//         {/* Category */}
-//         <span className="inline-block bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm">
-//           {blog.category}
-//         </span>
-
-//         {/* Title */}
-//         <h1 className="text-4xl font-bold mt-4 leading-tight">
-//           {blog.title}
-//         </h1>
-
-//         {/* Top Ad */}
-//         <AdBox
-//           size="banner"
-//           position="top"
-//           isAdEnabled={false}
-//         />
-
-//         {/* Date */}
-//         <p className="text-gray-500 mt-3">
-//           {blog.publishedAt
-//             ? new Date(blog.publishedAt).toLocaleDateString()
-//             : ""}
-//         </p>
-
-//         {/* Featured Image */}
-//         {blog.featuredImage && (
-//           <img
-//             src={blog.featuredImage}
-//             alt={blog.title}
-//             className="w-full rounded-xl my-8"
-//           />
-//         )}
-
-//         {/* Intro */}
-//         <div className="text-lg text-gray-700 leading-8 mb-10">
-//           {blog.intro}
-//         </div>
-
-//         {/* Ad After Intro */}
-//         <AdBox
-//           size="banner"
-//           position="after-intro"
-//           isAdEnabled={false}
-//         />
-
-//         {/* Sections */}
-//         {blog.sections?.map((section, index) => (
-//           <div key={index}>
-//             <div className="mb-10">
-//               <h2 className="text-2xl font-bold mb-4">
-//                 {section.heading}
-//               </h2>
-
-//               <p className="text-gray-700 leading-8">
-//                 {section.content}
-//               </p>
-
-//               {section.example && (
-//                 <div className="bg-blue-50 border-l-4 border-blue-400 p-4 mt-4 rounded">
-//                   <strong>উদাহরণ:</strong>
-//                   <p>{section.example}</p>
-//                 </div>
-//               )}
-
-//               {section.importantPoints?.length > 0 && (
-//                 <div className="mt-4">
-//                   <h4 className="font-semibold mb-2">
-//                     গুরুত্বপূর্ণ পয়েন্ট:
-//                   </h4>
-
-//                   <ul className="list-disc pl-5 space-y-1">
-//                     {section.importantPoints.map(
-//                       (point, idx) => (
-//                         <li key={idx}>{point}</li>
-//                       )
-//                     )}
-//                   </ul>
-//                 </div>
-//               )}
-//             </div>
-
-//             {/* Ad every 2 sections */}
-//             {(index + 1) % 2 === 0 && (
-//               <AdBox
-//                 size="banner"
-//                 position={`section-${index + 1}`}
-//                 isAdEnabled={false}
-//               />
-//             )}
-//           </div>
-//         ))}
-
-//         {/* Expert Tips */}
-//         {blog.expertTips?.length > 0 && (
-//           <div className="bg-green-50 border border-green-200 rounded-xl p-6 mt-10">
-//             <h3 className="font-bold text-xl mb-4">
-//               Expert Tips
-//             </h3>
-
-//             <ul className="space-y-2">
-//               {blog.expertTips.map((tip, i) => (
-//                 <li key={i}>✅ {tip}</li>
-//               ))}
-//             </ul>
-//           </div>
-//         )}
-
-//         {/* FAQ Ad */}
-//         {blog.faq?.length > 0 && (
-//           <>
-//             <AdBox
-//               size="banner"
-//               position="before-faq"
-//               isAdEnabled={false}
-//             />
-
-//             <div className="mt-12">
-//               <h2 className="text-3xl font-bold mb-6">
-//                 FAQ
-//               </h2>
-
-//               {blog.faq.map((item, i) => (
-//                 <div
-//                   key={i}
-//                   className="border-b py-4"
-//                 >
-//                   <h3 className="font-semibold">
-//                     {item.question}
-//                   </h3>
-
-//                   <p className="text-gray-600 mt-2">
-//                     {item.answer}
-//                   </p>
-//                 </div>
-//               ))}
-//             </div>
-//           </>
-//         )}
-
-//         {/* Conclusion */}
-//         <div className="mt-12 bg-gray-50 p-6 rounded-xl">
-//           <h2 className="text-2xl font-bold mb-3">
-//             উপসংহার
-//           </h2>
-
-//           <p className="leading-8 text-gray-700">
-//             {blog.conclusion}
-//           </p>
-//         </div>
-
-
-//       </div>
-
-
-//       <Footer />
-
-
-//     </>
-
-//   );
-// };
-
-// export default BlogDetails;
-
-
-
+import { useState } from "react";
 import { useParams } from "react-router";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import { ClipLoader } from "react-spinners";
 
 import Navbar from "./Navbar";
 import Footer from "./Footer";
@@ -235,6 +18,8 @@ const fetchBlog = async (slug) => {
 
 const BlogDetails = () => {
   const { slug } = useParams();
+
+  const [imageLoading, setImageLoading] = useState(true);
 
   const {
     data: blog,
@@ -264,6 +49,12 @@ const BlogDetails = () => {
     );
   }
 
+  const thumbnail =
+    blog?.thumbnail?.url ||
+    blog?.featuredImage ||
+    blog?.image ||
+    "";
+
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-white transition-colors duration-300">
 
@@ -275,6 +66,42 @@ const BlogDetails = () => {
         <span className="inline-flex rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 px-4 py-1 text-sm font-semibold">
           {blog.category}
         </span>
+
+        {/* Blog Thumbnail */}
+        {thumbnail && (
+          <div className="mt-8 mb-8 overflow-hidden rounded-3xl bg-gray-100 dark:bg-gray-900 shadow-xl">
+
+            {imageLoading && (
+              <div className="flex h-[220px] sm:h-[320px] md:h-[420px] lg:h-[500px] items-center justify-center">
+                <ClipLoader
+                  size={45}
+                  color="#2563eb"
+                />
+              </div>
+            )}
+
+            <img
+              src={thumbnail}
+              alt={blog.title}
+              loading="lazy"
+              onLoad={() => setImageLoading(false)}
+              onError={() => setImageLoading(false)}
+              className={`
+                w-full
+                h-[220px]
+                sm:h-[320px]
+                md:h-[420px]
+                lg:h-[500px]
+                object-cover
+                transition-all
+                duration-500
+                hover:scale-105
+                ${imageLoading ? "hidden" : "block"}
+              `}
+            />
+          </div>
+        )}
+
 
         {/* Title */}
         <h1 className="mt-5 text-4xl font-bold leading-tight">
@@ -297,14 +124,6 @@ const BlogDetails = () => {
           />
         </div>
 
-        {/* Featured Image */}
-        {blog.featuredImage && (
-          <img
-            src={blog.featuredImage}
-            alt={blog.title}
-            className="w-full rounded-2xl my-8"
-          />
-        )}
 
         {/* Intro */}
         <div className="text-lg leading-8 text-gray-700 dark:text-gray-300 mb-10">
@@ -353,7 +172,7 @@ const BlogDetails = () => {
                 <div className="mt-6">
 
                   <h3 className="font-semibold mb-3">
-                    গুরুত্বপূর্ণ পয়েন্ট
+                    গুরুত্বপূর্ণ পয়েন্ট
                   </h3>
 
                   <ul className="list-disc pl-6 space-y-2 text-gray-700 dark:text-gray-300">
@@ -474,6 +293,3 @@ const BlogDetails = () => {
 };
 
 export default BlogDetails;
-
-
-

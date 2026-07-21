@@ -12,6 +12,9 @@ const BlogCard = ({ blog }) => {
     blog?.image ||
     "";
 
+
+
+
   return (
     <article
       className="

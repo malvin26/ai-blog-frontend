@@ -376,12 +376,7 @@ const AdminDash = () => {
             <ToastContainer toasts={toasts} removeToast={removeToast} />
 
             <Navbar>
-                <button
-                    onClick={toggleTheme}
-                    className="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-100 font-medium transition mr-3"
-                >
-                    {darkMode ? "☀️ Light" : "🌙 Dark"}
-                </button>
+
                 <button
                     onClick={handleLogout}
                     className="px-5 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-medium transition"
