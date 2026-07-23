@@ -22,17 +22,7 @@ const HeroAd = () => {
               Sponsored By
             </span>
 
-            {/* Title */}
-            <h2 className="mt-3 text-white font-extrabold leading-tight text-xl sm:text-3xl md:text-5xl lg:text-6xl drop-shadow-lg">
-              Waqia Sobji Ghor
-            </h2>
 
-            {/* Description */}
-            <p className="mt-3 text-white text-xs sm:text-sm md:text-lg leading-relaxed drop-shadow-md">
-              Fresh Vegetables Daily
-              <br />
-              Farm To Home • 100% Fresh • Clean • Healthy
-            </p>
 
             {/* Button */}
             <a
