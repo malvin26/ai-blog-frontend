@@ -10,7 +10,7 @@ const Footer = () => {
                 <AdBox
                     size="banner"
                     position="footer"
-                    isAdEnabled={false}
+                    isAdEnabled={true}
                 />
             </div>
 

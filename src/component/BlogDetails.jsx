@@ -120,7 +120,7 @@ const BlogDetails = () => {
           <AdBox
             size="banner"
             position="top"
-            isAdEnabled={false}
+            isAdEnabled={true}
           />
         </div>
 
@@ -135,7 +135,7 @@ const BlogDetails = () => {
           <AdBox
             size="banner"
             position="after-intro"
-            isAdEnabled={false}
+            isAdEnabled={true}
           />
         </div>
 
@@ -195,7 +195,7 @@ const BlogDetails = () => {
                 <AdBox
                   size="banner"
                   position={`section-${index + 1}`}
-                  isAdEnabled={false}
+                  isAdEnabled={true}
                 />
               </div>
 
@@ -237,7 +237,7 @@ const BlogDetails = () => {
               <AdBox
                 size="banner"
                 position="before-faq"
-                isAdEnabled={false}
+                isAdEnabled={true}
               />
             </div>
 

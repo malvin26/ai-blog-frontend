@@ -6,7 +6,7 @@ const AdBox = ({
   position = "inline",
   adSlotId = "",
   adClient = "ca-pub-1544169214358008",
-  isAdEnabled = false, // 🔥 toggle for production
+  isAdEnabled = true, // 🔥 toggle for production
 }) => {
   const [loaded, setLoaded] = useState(false);
 
