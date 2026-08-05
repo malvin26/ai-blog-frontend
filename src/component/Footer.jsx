@@ -34,15 +34,15 @@ const Footer = () => {
                 {/* About */}
                 <div>
                     <h3 className="font-bold mb-2">
-                        About Us
+                        About FastBlog
                     </h3>
 
-                    <p>
-                        We publish informative articles covering
-                        technology, education, business,
-                        lifestyle and other topics. Some content
-                        may be assisted by AI tools and reviewed
-                        before publication.
+                    <p className="text-gray-400 leading-6">
+                        <strong>FastBlog</strong> is your trusted source for insightful and
+                        up-to-date content on technology, AI, business, education,
+                        productivity, lifestyle, and more. Our mission is to deliver
+                        high-quality, accurate, and easy-to-understand articles that help
+                        readers stay informed and grow every day.
                     </p>
                 </div>
 
