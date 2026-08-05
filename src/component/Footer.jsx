@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import AdBox from "./AdBox";
+import brandImage from "/image/brand_logo.png"
 
 const Footer = () => {
     return (
@@ -15,7 +16,20 @@ const Footer = () => {
             </div>
 
             {/* FOOTER CONTENT */}
-            <div className="max-w-6xl mx-auto grid md:grid-cols-4 gap-6 p-6 text-sm">
+            <div className="max-w-6xl mx-auto grid md:grid-cols-5 gap-7 p-6 text-sm">
+
+                {/* brand imagew  */}
+
+                <div className="flex items-center justify-center md:justify-start">
+                    <Link to="/">
+                        <img
+                            src={brandImage}
+                            alt="FastBlog"
+                            className="w-40 sm:w-48 md:w-52 lg:w-60 h-auto object-contain"
+                            loading="lazy"
+                        />
+                    </Link>
+                </div>
 
                 {/* About */}
                 <div>

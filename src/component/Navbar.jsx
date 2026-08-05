@@ -7,8 +7,8 @@ import {
   ChevronDown,
   ChevronRight,
 } from "lucide-react";
-
 import ThemeToggle from "./ThemeToggle";
+import BrandIcon from "/image/brand_icon.png"
 
 const Navbar = ({
   categories = [],
@@ -41,9 +41,20 @@ const Navbar = ({
           {/* Logo */}
           <Link
             to="/"
-            className="text-2xl font-bold"
+            className="flex items-center"
           >
-            AI Blog
+            <img
+              src={BrandIcon}
+              alt="FastBlog Logo"
+              className="
+      h-9 w-auto
+      sm:h-10
+      md:h-11
+      lg:h-12
+      object-contain
+      transition-all duration-300
+    "
+            />
           </Link>
 
           {/* Desktop Menu */}
