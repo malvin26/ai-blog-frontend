@@ -52,8 +52,8 @@ const Footer = () => {
                         Contact
                     </h3>
 
-                    <p>Email: support@yourwebsite.com</p>
-                    <p>Location: Bangladesh</p>
+                    <p>Email: malvinjack26@gmail.com</p>
+                    <p>Location: Savar, Bangladesh</p>
                 </div>
 
                 {/* Policies */}
