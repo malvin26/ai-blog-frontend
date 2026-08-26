@@ -34,7 +34,7 @@ const fetchBlogs = async ({ queryKey }) => {
 		}
 	);
 
-	console.log(res);
+	// console.log(res);
 
 	return res.data;
 };
