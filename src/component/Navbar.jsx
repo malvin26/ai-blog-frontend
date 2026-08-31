@@ -137,7 +137,7 @@ const Navbar = ({
             onClick={() => setMobileOpen(false)}
             className="text-2xl font-bold"
           >
-            AI Blog
+            FastBlog Nav
           </Link>
 
           <button
