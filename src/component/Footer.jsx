@@ -1,6 +1,7 @@
+
 import { Link } from "react-router";
 import AdBox from "./AdBox";
-import brandImage from "/image/brand_logo.png"
+import brandImage from "/image/brand_logo.png";
 
 const Footer = () => {
     return (
@@ -18,8 +19,7 @@ const Footer = () => {
             {/* FOOTER CONTENT */}
             <div className="max-w-6xl mx-auto grid md:grid-cols-5 gap-7 p-6 text-sm">
 
-                {/* brand imagew  */}
-
+                {/* BRAND */}
                 <div className="flex items-center justify-center md:justify-start">
                     <Link to="/">
                         <img
@@ -31,7 +31,7 @@ const Footer = () => {
                     </Link>
                 </div>
 
-                {/* About */}
+                {/* ABOUT */}
                 <div>
                     <h3 className="font-bold mb-2">
                         About FastBlog
@@ -46,7 +46,7 @@ const Footer = () => {
                     </p>
                 </div>
 
-                {/* Contact */}
+                {/* CONTACT */}
                 <div>
                     <h3 className="font-bold mb-2">
                         Contact
@@ -56,7 +56,7 @@ const Footer = () => {
                     <p>Location: Savar, Bangladesh</p>
                 </div>
 
-                {/* Policies */}
+                {/* POLICIES */}
                 <div>
                     <h3 className="font-bold mb-2">
                         Policies
@@ -64,6 +64,17 @@ const Footer = () => {
 
                     <ul className="space-y-1">
 
+                        {/* About Us */}
+                        <li>
+                            <Link
+                                to="/about-us"
+                                className="text-blue-400 hover:underline"
+                            >
+                                About Us
+                            </Link>
+                        </li>
+
+                        {/* Privacy Policy */}
                         <li>
                             <Link
                                 to="/privacy-policy"
@@ -73,6 +84,7 @@ const Footer = () => {
                             </Link>
                         </li>
 
+                        {/* Ad Policy */}
                         <li>
                             <Link
                                 to="/ad-policy"
@@ -82,6 +94,7 @@ const Footer = () => {
                             </Link>
                         </li>
 
+                        {/* Terms */}
                         <li>
                             <Link
                                 to="/terms"
@@ -91,6 +104,7 @@ const Footer = () => {
                             </Link>
                         </li>
 
+                        {/* Contact */}
                         <li>
                             <Link
                                 to="/contact"
@@ -103,7 +117,7 @@ const Footer = () => {
                     </ul>
                 </div>
 
-                {/* Donate */}
+                {/* DONATE */}
                 <div>
                     <h3 className="font-bold mb-2">
                         Support / Donate
@@ -123,7 +137,7 @@ const Footer = () => {
 
             {/* COPYRIGHT */}
             <div className="text-center text-xs text-gray-500 py-4 border-t border-gray-700">
-                © {new Date().getFullYear()} Your Website.
+                © {new Date().getFullYear()} FastBlog.
                 All rights reserved.
             </div>
 
@@ -132,3 +146,4 @@ const Footer = () => {
 };
 
 export default Footer;
+

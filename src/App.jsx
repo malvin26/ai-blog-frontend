@@ -11,6 +11,7 @@ import PrivacyPolicy from "./pages/PrivecyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import AdPolicy from "./pages/AdPolicy";
 import Contact from "./pages/Contact";
+import AboutUs from "./pages/AboutUs";
 
 
 
@@ -26,6 +27,8 @@ function App() {
       <Route path="/terms" element={<TermsOfService />} />
       <Route path="/ad-policy" element={<AdPolicy />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/about-us" element={<AboutUs />} />
+
 
       <Route path="/login" element={<Login />} />
 
