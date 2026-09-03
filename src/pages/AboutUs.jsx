@@ -2,7 +2,7 @@
 import { Link } from "react-router";
 import Navbar from "../component/Navbar";
 import Footer from "../component/Footer";
-import { Facebook, Youtube, MessageCircle } from "lucide-react";
+import { Facebook, Youtube, MessageCircle } from "react-icons";
 
 const AboutUs = () => {
   return (
