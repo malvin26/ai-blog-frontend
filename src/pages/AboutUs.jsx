@@ -2,7 +2,12 @@
 import { Link } from "react-router";
 import Navbar from "../component/Navbar";
 import Footer from "../component/Footer";
-import { Facebook, Youtube, MessageCircle } from "react-icons";
+
+import {
+  FaFacebook,
+  FaYoutube,
+  FaWhatsapp
+} from "react-icons/fa";
 
 const AboutUs = () => {
   return (
@@ -74,7 +79,7 @@ const AboutUs = () => {
 
           <hr className="border-gray-200 dark:border-gray-700 mb-6" />
 
-          {/* Support / Donate Section */}
+          {/* Support / Donate */}
           <div className="mb-8 rounded-xl border border-pink-200 dark:border-pink-900/40 bg-pink-50 dark:bg-pink-950/20 p-6">
 
             <h2 className="text-xl font-semibold mb-2 flex items-center gap-2">
@@ -105,18 +110,17 @@ const AboutUs = () => {
               এটি একটি ব্যক্তিগত নাম্বার — ওয়েবসাইট মেইনটেনেন্সের জন্য ব্যবহৃত
               হয়। যোগাযোগের প্রয়োজনে দয়া করে ফোন কল না করে শুধুমাত্র{" "}
 
-              {/* WhatsApp Link */}
               <a
                 href="https://wa.me/8801741416807"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 text-green-600 dark:text-green-400 font-medium hover:underline"
               >
-                <MessageCircle size={16} />
+                <FaWhatsapp size={17} />
                 WhatsApp
               </a>
 
-              {" "}-এ মেসেজ দিন।
+              {" "} -এ মেসেজ দিন।
 
             </p>
 
@@ -127,11 +131,11 @@ const AboutUs = () => {
           {/* Developer & Sponsor */}
           <div className="flex flex-col gap-4">
 
-            {/* Developed By - Facebook */}
+            {/* Facebook */}
             <p className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-2">
 
-              <Facebook
-                size={18}
+              <FaFacebook
+                size={19}
                 className="text-blue-600 dark:text-blue-400"
               />
 
@@ -146,16 +150,15 @@ const AboutUs = () => {
                 >
                   Rony Hossen
                 </a>
-
               </span>
 
             </p>
 
-            {/* Sponsored By - YouTube */}
+            {/* YouTube */}
             <p className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-2">
 
-              <Youtube
-                size={20}
+              <FaYoutube
+                size={21}
                 className="text-red-600 dark:text-red-400"
               />
 
@@ -170,46 +173,45 @@ const AboutUs = () => {
                 >
                   Waqia Sobji Ghor
                 </a>
-
               </span>
 
             </p>
 
           </div>
 
-          {/* Social Links */}
+          {/* Social Media Buttons */}
           <div className="mt-6 flex flex-wrap gap-3">
 
-            {/* Facebook Button */}
+            {/* Facebook */}
             <a
               href="https://web.facebook.com/rhRonyHossen01"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition-all duration-200 hover:bg-blue-700 hover:shadow-md"
             >
-              <Facebook size={18} />
+              <FaFacebook size={18} />
               Facebook
             </a>
 
-            {/* YouTube Button */}
+            {/* YouTube */}
             <a
               href="https://www.youtube.com/@WaqiaSobjiGhor"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white transition-all duration-200 hover:bg-red-700 hover:shadow-md"
             >
-              <Youtube size={18} />
+              <FaYoutube size={18} />
               YouTube
             </a>
 
-            {/* WhatsApp Button */}
+            {/* WhatsApp */}
             <a
               href="https://wa.me/8801741416807"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white transition-all duration-200 hover:bg-green-700 hover:shadow-md"
             >
-              <MessageCircle size={18} />
+              <FaWhatsapp size={18} />
               WhatsApp
             </a>
 
@@ -235,4 +237,3 @@ const AboutUs = () => {
 };
 
 export default AboutUs;
-
