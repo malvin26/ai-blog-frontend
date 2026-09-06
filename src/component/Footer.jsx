@@ -124,7 +124,7 @@ const Footer = () => {
                     </h3>
 
                     <p className="text-pink-400 font-semibold">
-                        bKash: 01741416807 (WhatsApp)
+                        bKash: 01617370355 (WhatsApp)
                     </p>
 
                     <p className="text-xs mt-2 text-gray-400">

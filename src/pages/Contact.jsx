@@ -60,7 +60,7 @@ const Contact = () => {
               </h3>
 
               <p className="mt-3 text-3xl font-bold tracking-wider text-pink-700 dark:text-pink-300">
-                01741416807
+                01617370355
               </p>
 
               <p className="mt-2 text-sm text-pink-600 dark:text-pink-400">

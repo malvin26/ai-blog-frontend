@@ -100,7 +100,7 @@ const AboutUs = () => {
               </span>
 
               <span className="text-lg font-bold tracking-wide">
-                01741416807
+                01617370355
               </span>
 
             </div>
