@@ -1,4 +1,4 @@
-````jsx
+
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
@@ -1133,8 +1133,8 @@ const AdminDash = () => {
                                         handleDragLeave
                                     }
                                     className={`cursor-pointer rounded-xl border-2 border-dashed p-8 text-center transition-colors duration-200 ${isDragging
-                                            ? "border-blue-500 bg-blue-50 dark:bg-blue-950"
-                                            : "border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800"
+                                        ? "border-blue-500 bg-blue-50 dark:bg-blue-950"
+                                        : "border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800"
                                         }`}
                                 >
                                     <p className="text-gray-600 dark:text-gray-300 font-medium">
