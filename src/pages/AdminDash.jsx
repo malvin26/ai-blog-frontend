@@ -1,3 +1,4 @@
+````jsx
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
@@ -9,7 +10,10 @@ import Navbar from "../component/Navbar";
 
 const Toast = ({ toast, onClose }) => {
     useEffect(() => {
-        const timer = setTimeout(() => onClose(toast.id), 3500);
+        const timer = setTimeout(
+            () => onClose(toast.id),
+            3500
+        );
 
         return () => clearTimeout(timer);
     }, [toast.id, onClose]);
@@ -34,7 +38,10 @@ const Toast = ({ toast, onClose }) => {
     );
 };
 
-const ToastContainer = ({ toasts, removeToast }) => (
+const ToastContainer = ({
+    toasts,
+    removeToast,
+}) => (
     <div className="fixed top-6 right-6 z-[100] flex flex-col gap-3">
         {toasts.map((t) => (
             <Toast
@@ -52,7 +59,14 @@ const ToastContainer = ({ toasts, removeToast }) => (
 
 const AdminDash = () => {
     const navigate = useNavigate();
-    const fileInputRef = useRef(null);
+
+    // =========================
+    // FILE INPUT REFS
+    // =========================
+
+    const thumbnailInputRef = useRef(null);
+    const affiliatedThumbnailInputRef =
+        useRef(null);
 
     // =========================
     // GENERAL STATE
@@ -67,10 +81,26 @@ const AdminDash = () => {
     const [publishMsg, setPublishMsg] = useState("");
 
     // =========================
-    // AFFILIATE LINK STATE
+    // AFFILIATE STATE
     // =========================
 
-    const [affiliatedLink, setAffiliatedLink] = useState("");
+    const [affiliatedLink, setAffiliatedLink] =
+        useState("");
+
+    const [
+        affiliatedThumbnailFile,
+        setAffiliatedThumbnailFile,
+    ] = useState(null);
+
+    const [
+        affiliatedThumbnailPreview,
+        setAffiliatedThumbnailPreview,
+    ] = useState(null);
+
+    const [
+        affiliatedImageError,
+        setAffiliatedImageError,
+    ] = useState("");
 
     // =========================
     // TOKEN STATE
@@ -84,15 +114,20 @@ const AdminDash = () => {
     });
 
     // =========================
-    // IMAGE UPLOAD STATE
+    // MAIN THUMBNAIL STATE
     // =========================
 
-    const [thumbnailFile, setThumbnailFile] = useState(null);
-    const [thumbnailPreview, setThumbnailPreview] = useState(null);
+    const [thumbnailFile, setThumbnailFile] =
+        useState(null);
 
-    const [isDragging, setIsDragging] = useState(false);
+    const [thumbnailPreview, setThumbnailPreview] =
+        useState(null);
 
-    const [imageError, setImageError] = useState("");
+    const [isDragging, setIsDragging] =
+        useState(false);
+
+    const [imageError, setImageError] =
+        useState("");
 
     // =========================
     // TOAST STATE
@@ -100,8 +135,12 @@ const AdminDash = () => {
 
     const [toasts, setToasts] = useState([]);
 
-    const pushToast = (message, type = "success") => {
-        const id = Date.now() + Math.random();
+    const pushToast = (
+        message,
+        type = "success"
+    ) => {
+        const id =
+            Date.now() + Math.random();
 
         setToasts((prev) => [
             ...prev,
@@ -120,11 +159,14 @@ const AdminDash = () => {
     };
 
     // =========================
-    // DARK MODE STATE
+    // DARK MODE
     // =========================
 
     const [darkMode, setDarkMode] = useState(() => {
-        const saved = localStorage.getItem("admin_theme");
+        const saved =
+            localStorage.getItem(
+                "admin_theme"
+            );
 
         if (saved) {
             return saved === "dark";
@@ -135,12 +177,9 @@ const AdminDash = () => {
         ).matches;
     });
 
-    // =========================
-    // DARK MODE EFFECT
-    // =========================
-
     useEffect(() => {
-        const root = document.documentElement;
+        const root =
+            document.documentElement;
 
         if (darkMode) {
             root.classList.add("dark");
@@ -168,9 +207,10 @@ const AdminDash = () => {
     // =========================
 
     useEffect(() => {
-        const token = localStorage.getItem(
-            "adminAccessToken"
-        );
+        const token =
+            localStorage.getItem(
+                "adminAccessToken"
+            );
 
         if (!token) {
             navigate("/xxx-admin-login");
@@ -178,10 +218,14 @@ const AdminDash = () => {
         }
 
         const savedContent =
-            localStorage.getItem("ai_blog");
+            localStorage.getItem(
+                "ai_blog"
+            );
 
         const savedTokens =
-            localStorage.getItem("ai_tokens");
+            localStorage.getItem(
+                "ai_tokens"
+            );
 
         const savedAffiliateLink =
             localStorage.getItem(
@@ -235,7 +279,7 @@ const AdminDash = () => {
     }, [affiliatedLink]);
 
     // =========================
-    // CLEANUP OBJECT URL
+    // CLEANUP OBJECT URLS
     // =========================
 
     useEffect(() => {
@@ -245,8 +289,19 @@ const AdminDash = () => {
                     thumbnailPreview
                 );
             }
+
+            if (
+                affiliatedThumbnailPreview
+            ) {
+                URL.revokeObjectURL(
+                    affiliatedThumbnailPreview
+                );
+            }
         };
-    }, [thumbnailPreview]);
+    }, [
+        thumbnailPreview,
+        affiliatedThumbnailPreview,
+    ]);
 
     // =========================
     // GENERATE CONTENT
@@ -259,12 +314,15 @@ const AdminDash = () => {
             setError("");
             setPublishMsg("");
 
-            const token = localStorage.getItem(
-                "adminAccessToken"
-            );
+            const token =
+                localStorage.getItem(
+                    "adminAccessToken"
+                );
 
             if (!token) {
-                navigate("/xxx-admin-login");
+                navigate(
+                    "/xxx-admin-login"
+                );
                 return;
             }
 
@@ -277,19 +335,22 @@ const AdminDash = () => {
                 }
             );
 
-            const data = res?.data?.data;
+            const data =
+                res?.data?.data;
 
             setContent(data?.result);
 
             localStorage.setItem(
                 "ai_blog",
-                JSON.stringify(data?.result)
+                JSON.stringify(
+                    data?.result
+                )
             );
 
             const tokenData = {
                 prompt:
-                    data?.usage?.prompt_tokens ||
-                    0,
+                    data?.usage
+                        ?.prompt_tokens || 0,
 
                 completion:
                     data?.usage
@@ -297,11 +358,12 @@ const AdminDash = () => {
                     0,
 
                 total:
-                    data?.usage?.total_tokens ||
-                    0,
+                    data?.usage
+                        ?.total_tokens || 0,
 
                 thoughts:
-                    data?.usage?.thoughts_tokens ||
+                    data?.usage
+                        ?.thoughts_tokens ||
                     0,
             };
 
@@ -309,7 +371,9 @@ const AdminDash = () => {
 
             localStorage.setItem(
                 "ai_tokens",
-                JSON.stringify(tokenData)
+                JSON.stringify(
+                    tokenData
+                )
             );
 
             pushToast(
@@ -318,23 +382,28 @@ const AdminDash = () => {
             );
         } catch (err) {
             const msg =
-                err?.response?.data?.message ||
+                err?.response?.data
+                    ?.message ||
                 "Generation failed";
 
             setError(msg);
 
-            pushToast(msg, "error");
+            pushToast(
+                msg,
+                "error"
+            );
         } finally {
             setLoading(false);
         }
     };
 
     // =========================
-    // HANDLE EDIT
+    // HANDLE CONTENT EDIT
     // =========================
 
     const handleContentChange = (e) => {
-        const val = e.target.value;
+        const val =
+            e.target.value;
 
         setContent(val);
 
@@ -348,12 +417,16 @@ const AdminDash = () => {
     // AFFILIATE LINK CHANGE
     // =========================
 
-    const handleAffiliateChange = (e) => {
-        setAffiliatedLink(e.target.value);
+    const handleAffiliateChange = (
+        e
+    ) => {
+        setAffiliatedLink(
+            e.target.value
+        );
     };
 
     // =========================
-    // IMAGE VALIDATION
+    // IMAGE SETTINGS
     // =========================
 
     const ALLOWED_TYPES = [
@@ -365,12 +438,22 @@ const AdminDash = () => {
 
     const MAX_SIZE_MB = 5;
 
-    const validateAndSetImage = (file) => {
+    // =========================
+    // MAIN THUMBNAIL VALIDATION
+    // =========================
+
+    const validateAndSetImage = (
+        file
+    ) => {
         setImageError("");
 
         if (!file) return;
 
-        if (!ALLOWED_TYPES.includes(file.type)) {
+        if (
+            !ALLOWED_TYPES.includes(
+                file.type
+            )
+        ) {
             setImageError(
                 "শুধুমাত্র JPG, PNG বা WEBP ফরম্যাট গ্রহণযোগ্য।"
             );
@@ -402,7 +485,64 @@ const AdminDash = () => {
         );
     };
 
-    const handleFileInputChange = (e) => {
+    // =========================
+    // AFFILIATE THUMBNAIL VALIDATION
+    // =========================
+
+    const validateAndSetAffiliateImage = (
+        file
+    ) => {
+        setAffiliatedImageError("");
+
+        if (!file) return;
+
+        if (
+            !ALLOWED_TYPES.includes(
+                file.type
+            )
+        ) {
+            setAffiliatedImageError(
+                "শুধুমাত্র JPG, PNG বা WEBP ফরম্যাট গ্রহণযোগ্য।"
+            );
+
+            return;
+        }
+
+        if (
+            file.size >
+            MAX_SIZE_MB * 1024 * 1024
+        ) {
+            setAffiliatedImageError(
+                `ছবির সাইজ ${MAX_SIZE_MB}MB এর কম হতে হবে।`
+            );
+
+            return;
+        }
+
+        if (
+            affiliatedThumbnailPreview
+        ) {
+            URL.revokeObjectURL(
+                affiliatedThumbnailPreview
+            );
+        }
+
+        setAffiliatedThumbnailFile(
+            file
+        );
+
+        setAffiliatedThumbnailPreview(
+            URL.createObjectURL(file)
+        );
+    };
+
+    // =========================
+    // MAIN FILE INPUT
+    // =========================
+
+    const handleFileInputChange = (
+        e
+    ) => {
         const file =
             e.target.files?.[0];
 
@@ -410,6 +550,27 @@ const AdminDash = () => {
 
         e.target.value = "";
     };
+
+    // =========================
+    // AFFILIATE FILE INPUT
+    // =========================
+
+    const handleAffiliateFileInputChange = (
+        e
+    ) => {
+        const file =
+            e.target.files?.[0];
+
+        validateAndSetAffiliateImage(
+            file
+        );
+
+        e.target.value = "";
+    };
+
+    // =========================
+    // MAIN DRAG & DROP
+    // =========================
 
     const handleDrop = (e) => {
         e.preventDefault();
@@ -434,6 +595,10 @@ const AdminDash = () => {
         setIsDragging(false);
     };
 
+    // =========================
+    // REMOVE MAIN IMAGE
+    // =========================
+
     const handleRemoveImage = () => {
         if (thumbnailPreview) {
             URL.revokeObjectURL(
@@ -444,6 +609,30 @@ const AdminDash = () => {
         setThumbnailFile(null);
         setThumbnailPreview(null);
         setImageError("");
+    };
+
+    // =========================
+    // REMOVE AFFILIATE IMAGE
+    // =========================
+
+    const handleRemoveAffiliateImage = () => {
+        if (
+            affiliatedThumbnailPreview
+        ) {
+            URL.revokeObjectURL(
+                affiliatedThumbnailPreview
+            );
+        }
+
+        setAffiliatedThumbnailFile(
+            null
+        );
+
+        setAffiliatedThumbnailPreview(
+            null
+        );
+
+        setAffiliatedImageError("");
     };
 
     // =========================
@@ -464,6 +653,7 @@ const AdminDash = () => {
             return;
         }
 
+        // Main thumbnail required
         if (!thumbnailFile) {
             setImageError(
                 "Thumbnail image is required."
@@ -483,12 +673,15 @@ const AdminDash = () => {
             setError("");
             setPublishMsg("");
 
-            const token = localStorage.getItem(
-                "adminAccessToken"
-            );
+            const token =
+                localStorage.getItem(
+                    "adminAccessToken"
+                );
 
             if (!token) {
-                navigate("/xxx-admin-login");
+                navigate(
+                    "/xxx-admin-login"
+                );
                 return;
             }
 
@@ -498,13 +691,24 @@ const AdminDash = () => {
 
             let payload;
 
-            if (typeof content === "string") {
-                const cleaned = content
-                    .replace(/```json/g, "")
-                    .replace(/```/g, "")
-                    .trim();
+            if (
+                typeof content ===
+                "string"
+            ) {
+                const cleaned =
+                    content
+                        .replace(
+                            /```json/g,
+                            ""
+                        )
+                        .replace(
+                            /```/g,
+                            ""
+                        )
+                        .trim();
 
-                payload = JSON.parse(cleaned);
+                payload =
+                    JSON.parse(cleaned);
             } else {
                 payload = content;
             }
@@ -516,7 +720,8 @@ const AdminDash = () => {
             if (
                 !payload?.meta?.title ||
                 !payload?.meta?.slug ||
-                !payload?.meta?.description
+                !payload?.meta
+                    ?.description
             ) {
                 setError(
                     "Title, slug অথবা description missing."
@@ -559,50 +764,74 @@ const AdminDash = () => {
             // FORM DATA
             // =========================
 
-            const formData = new FormData();
+            const formData =
+                new FormData();
 
+            // Blog JSON
             formData.append(
                 "rawContent",
-                JSON.stringify(payload)
+                JSON.stringify(
+                    payload
+                )
             );
 
+            // Main thumbnail
             formData.append(
                 "thumbnail",
                 thumbnailFile
             );
 
+            // Affiliate thumbnail
+            if (
+                affiliatedThumbnailFile
+            ) {
+                formData.append(
+                    "affiliatedThumbnail",
+                    affiliatedThumbnailFile
+                );
+            }
+
             // =========================
             // API REQUEST
             // =========================
 
-            const res = await axios.post(
-                `${import.meta.env.VITE_API_URL}/xxx-admin-publish`,
-                formData,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type":
-                            "multipart/form-data",
-                    },
-                }
-            );
+            const res =
+                await axios.post(
+                    `${import.meta.env.VITE_API_URL}/xxx-admin-publish`,
+                    formData,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            "Content-Type":
+                                "multipart/form-data",
+                        },
+                    }
+                );
 
             // =========================
             // SUCCESS
             // =========================
 
-            if (res.data.success) {
+            if (
+                res.data.success
+            ) {
                 setPublishMsg(
-                    "✅ " + res.data.message
+                    "✅ " +
+                    res.data
+                        .message
                 );
 
                 pushToast(
-                    res.data.message ||
+                    res.data
+                        .message ||
                     "Blog published successfully.",
                     "success"
                 );
 
-                // Clear local storage
+                // =========================
+                // CLEAR LOCAL STORAGE
+                // =========================
+
                 localStorage.removeItem(
                     "ai_blog"
                 );
@@ -615,12 +844,17 @@ const AdminDash = () => {
                     "ai_affiliated_link"
                 );
 
-                // Clear states
+                // =========================
+                // CLEAR STATES
+                // =========================
+
                 setContent("");
 
                 setAffiliatedLink("");
 
                 handleRemoveImage();
+
+                handleRemoveAffiliateImage();
 
                 setTokens({
                     prompt: 0,
@@ -631,8 +865,10 @@ const AdminDash = () => {
             }
         } catch (err) {
             const msg =
-                err?.response?.data?.message ||
-                (err instanceof SyntaxError
+                err?.response?.data
+                    ?.message ||
+                (err instanceof
+                    SyntaxError
                     ? "Invalid JSON content"
                     : "Publish failed");
 
@@ -668,6 +904,8 @@ const AdminDash = () => {
         });
 
         handleRemoveImage();
+
+        handleRemoveAffiliateImage();
 
         localStorage.removeItem(
             "ai_blog"
@@ -715,7 +953,9 @@ const AdminDash = () => {
             "ai_affiliated_link"
         );
 
-        navigate("/xxx-admin-login");
+        navigate(
+            "/xxx-admin-login"
+        );
     };
 
     // =========================
@@ -731,7 +971,8 @@ const AdminDash = () => {
     // =========================
 
     const displayContent =
-        typeof content === "object"
+        typeof content ===
+            "object"
             ? JSON.stringify(
                 content,
                 null,
@@ -751,7 +992,9 @@ const AdminDash = () => {
 
             <ToastContainer
                 toasts={toasts}
-                removeToast={removeToast}
+                removeToast={
+                    removeToast
+                }
             />
 
             {/* =========================
@@ -760,7 +1003,9 @@ const AdminDash = () => {
 
             <Navbar>
                 <button
-                    onClick={toggleTheme}
+                    onClick={
+                        toggleTheme
+                    }
                     className="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-100 font-medium transition"
                 >
                     {darkMode
@@ -769,7 +1014,9 @@ const AdminDash = () => {
                 </button>
 
                 <button
-                    onClick={handleLogout}
+                    onClick={
+                        handleLogout
+                    }
                     className="px-5 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-medium transition"
                 >
                     Logout
@@ -781,7 +1028,6 @@ const AdminDash = () => {
             ========================= */}
 
             <div className="min-h-screen bg-gray-100 dark:bg-gray-950 transition-colors duration-300">
-
                 <div className="max-w-7xl mx-auto px-6 py-8 grid lg:grid-cols-2 gap-8">
 
                     {/* =====================================================
@@ -799,7 +1045,9 @@ const AdminDash = () => {
                         ========================= */}
 
                         <button
-                            onClick={handleGenerate}
+                            onClick={
+                                handleGenerate
+                            }
                             disabled={
                                 loading ||
                                 publishing
@@ -820,7 +1068,6 @@ const AdminDash = () => {
                         ========================= */}
 
                         <div className="mt-6">
-
                             <label
                                 htmlFor="affiliateLink"
                                 className="block text-sm font-semibold mb-2 text-gray-900 dark:text-gray-100"
@@ -850,7 +1097,6 @@ const AdminDash = () => {
                                 product link থাকলে
                                 এখানে paste করুন।
                             </p>
-
                         </div>
 
                         {/* =========================
@@ -863,12 +1109,11 @@ const AdminDash = () => {
                             </div>
                         )}
 
-                        {/* =========================
-                            THUMBNAIL UPLOAD
-                        ========================= */}
+                        {/* =====================================================
+                            MAIN THUMBNAIL
+                        ===================================================== */}
 
                         <div className="mt-8">
-
                             <h3 className="font-bold text-lg mb-4 text-gray-900 dark:text-gray-100">
                                 Thumbnail Image
                             </h3>
@@ -876,7 +1121,7 @@ const AdminDash = () => {
                             {!thumbnailPreview ? (
                                 <div
                                     onClick={() =>
-                                        fileInputRef.current?.click()
+                                        thumbnailInputRef.current?.click()
                                     }
                                     onDrop={
                                         handleDrop
@@ -892,7 +1137,6 @@ const AdminDash = () => {
                                             : "border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800"
                                         }`}
                                 >
-
                                     <p className="text-gray-600 dark:text-gray-300 font-medium">
                                         ছবি এখানে ড্র্যাগ করুন
                                         অথবা ক্লিক করে
@@ -902,13 +1146,15 @@ const AdminDash = () => {
                                     <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
                                         JPG, PNG, WEBP —
                                         সর্বোচ্চ{" "}
-                                        {MAX_SIZE_MB}
+                                        {
+                                            MAX_SIZE_MB
+                                        }{" "}
                                         MB
                                     </p>
 
                                     <input
                                         ref={
-                                            fileInputRef
+                                            thumbnailInputRef
                                         }
                                         type="file"
                                         accept="image/jpeg,image/jpg,image/png,image/webp"
@@ -917,11 +1163,9 @@ const AdminDash = () => {
                                         }
                                         className="hidden"
                                     />
-
                                 </div>
                             ) : (
                                 <div className="relative rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
-
                                     <img
                                         src={
                                             thumbnailPreview
@@ -931,10 +1175,9 @@ const AdminDash = () => {
                                     />
 
                                     <div className="absolute inset-0 bg-black/0 hover:bg-black/40 transition-colors duration-200 flex items-center justify-center gap-3 opacity-0 hover:opacity-100">
-
                                         <button
                                             onClick={() =>
-                                                fileInputRef.current?.click()
+                                                thumbnailInputRef.current?.click()
                                             }
                                             className="px-4 py-2 rounded-lg bg-white/90 text-gray-900 text-sm font-semibold hover:bg-white"
                                         >
@@ -949,12 +1192,11 @@ const AdminDash = () => {
                                         >
                                             Remove
                                         </button>
-
                                     </div>
 
                                     <input
                                         ref={
-                                            fileInputRef
+                                            thumbnailInputRef
                                         }
                                         type="file"
                                         accept="image/jpeg,image/jpg,image/png,image/webp"
@@ -963,30 +1205,139 @@ const AdminDash = () => {
                                         }
                                         className="hidden"
                                     />
-
                                 </div>
                             )}
 
                             {imageError && (
                                 <p className="mt-2 text-sm text-red-600 dark:text-red-400">
-                                    {imageError}
+                                    {
+                                        imageError
+                                    }
+                                </p>
+                            )}
+                        </div>
+
+                        {/* =====================================================
+                            AFFILIATE THUMBNAIL
+                        ===================================================== */}
+
+                        <div className="mt-8">
+                            <div className="flex items-center justify-between mb-4">
+                                <h3 className="font-bold text-lg text-gray-900 dark:text-gray-100">
+                                    Affiliate Thumbnail
+                                </h3>
+
+                                <span className="text-xs px-2.5 py-1 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-400">
+                                    Optional
+                                </span>
+                            </div>
+
+                            {!affiliatedThumbnailPreview ? (
+                                <div
+                                    onClick={() =>
+                                        affiliatedThumbnailInputRef.current?.click()
+                                    }
+                                    className="cursor-pointer rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-8 text-center hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors duration-200"
+                                >
+                                    <div className="text-3xl mb-3">
+                                        🛍️
+                                    </div>
+
+                                    <p className="text-gray-600 dark:text-gray-300 font-medium">
+                                        Affiliate product
+                                        image নির্বাচন করুন
+                                    </p>
+
+                                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
+                                        JPG, PNG, WEBP —
+                                        সর্বোচ্চ{" "}
+                                        {
+                                            MAX_SIZE_MB
+                                        }{" "}
+                                        MB
+                                    </p>
+
+                                    <input
+                                        ref={
+                                            affiliatedThumbnailInputRef
+                                        }
+                                        type="file"
+                                        accept="image/jpeg,image/jpg,image/png,image/webp"
+                                        onChange={
+                                            handleAffiliateFileInputChange
+                                        }
+                                        className="hidden"
+                                    />
+                                </div>
+                            ) : (
+                                <div className="relative rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
+                                    <img
+                                        src={
+                                            affiliatedThumbnailPreview
+                                        }
+                                        alt="Affiliate product preview"
+                                        className="w-full h-56 object-cover"
+                                    />
+
+                                    <div className="absolute inset-0 bg-black/0 hover:bg-black/40 transition-colors duration-200 flex items-center justify-center gap-3 opacity-0 hover:opacity-100">
+                                        <button
+                                            onClick={() =>
+                                                affiliatedThumbnailInputRef.current?.click()
+                                            }
+                                            className="px-4 py-2 rounded-lg bg-white/90 text-gray-900 text-sm font-semibold hover:bg-white"
+                                        >
+                                            Change
+                                        </button>
+
+                                        <button
+                                            onClick={
+                                                handleRemoveAffiliateImage
+                                            }
+                                            className="px-4 py-2 rounded-lg bg-red-600/90 text-white text-sm font-semibold hover:bg-red-600"
+                                        >
+                                            Remove
+                                        </button>
+                                    </div>
+
+                                    <input
+                                        ref={
+                                            affiliatedThumbnailInputRef
+                                        }
+                                        type="file"
+                                        accept="image/jpeg,image/jpg,image/png,image/webp"
+                                        onChange={
+                                            handleAffiliateFileInputChange
+                                        }
+                                        className="hidden"
+                                    />
+                                </div>
+                            )}
+
+                            {affiliatedImageError && (
+                                <p className="mt-2 text-sm text-red-600 dark:text-red-400">
+                                    {
+                                        affiliatedImageError
+                                    }
                                 </p>
                             )}
 
+                            <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                                Daraz বা অন্য affiliate
+                                product-এর image এখানে
+                                দিতে পারেন।
+                            </p>
                         </div>
 
-                        {/* =========================
+                        {/* =====================================================
                             TOKEN USAGE
-                        ========================= */}
+                        ===================================================== */}
 
                         <div className="mt-8 rounded-xl bg-blue-50 dark:bg-gray-800 border border-blue-100 dark:border-gray-700 p-5 transition-colors duration-300">
-
                             <h3 className="font-bold text-lg mb-4 text-gray-900 dark:text-gray-100">
                                 Token Usage
                             </h3>
 
                             <div className="space-y-2 text-gray-700 dark:text-gray-300">
-
                                 <div className="flex justify-between">
                                     <span>
                                         Prompt
@@ -1026,7 +1377,6 @@ const AdminDash = () => {
                                 <hr className="dark:border-gray-700" />
 
                                 <div className="flex justify-between font-bold text-gray-900 dark:text-gray-100">
-
                                     <span>
                                         Total Tokens
                                     </span>
@@ -1036,11 +1386,9 @@ const AdminDash = () => {
                                             tokens.total
                                         }
                                     </span>
-
                                 </div>
 
                                 <div className="flex justify-between text-green-600 dark:text-green-400 font-semibold">
-
                                     <span>
                                         Estimated Cost
                                     </span>
@@ -1051,12 +1399,9 @@ const AdminDash = () => {
                                             5
                                         )}
                                     </span>
-
                                 </div>
-
                             </div>
                         </div>
-
                     </div>
 
                     {/* =====================================================
@@ -1064,7 +1409,6 @@ const AdminDash = () => {
                     ===================================================== */}
 
                     <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-md border border-gray-200 dark:border-gray-800 p-6 transition-colors duration-300">
-
                         <h2 className="text-2xl font-bold mb-5 text-gray-900 dark:text-gray-100">
                             Generated Content
                         </h2>
@@ -1086,7 +1430,9 @@ const AdminDash = () => {
 
                         {publishMsg && (
                             <div className="mt-4 rounded-xl bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 p-4 text-green-700 dark:text-green-400">
-                                {publishMsg}
+                                {
+                                    publishMsg
+                                }
                             </div>
                         )}
 
@@ -1095,7 +1441,6 @@ const AdminDash = () => {
                         ========================= */}
 
                         <div className="grid grid-cols-2 gap-4 mt-6">
-
                             <button
                                 onClick={
                                     handleClear
@@ -1116,7 +1461,6 @@ const AdminDash = () => {
                                 }
                                 className="py-3 rounded-xl bg-green-600 hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700 text-white font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                             >
-
                                 {publishing && (
                                     <span className="h-4 w-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
                                 )}
@@ -1124,13 +1468,9 @@ const AdminDash = () => {
                                 {publishing
                                     ? "Publishing..."
                                     : "Publish Blog"}
-
                             </button>
-
                         </div>
-
                     </div>
-
                 </div>
             </div>
         </>
@@ -1138,3 +1478,4 @@ const AdminDash = () => {
 };
 
 export default AdminDash;
+
