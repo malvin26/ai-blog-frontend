@@ -812,6 +812,44 @@ const AdminDash = () => {
             // SUCCESS
             // =========================
 
+
+            console.log("========== PUBLISH AFFILIATE DATA ==========");
+
+            console.log(
+                "Affiliate Link:",
+                affiliatedLink
+            );
+
+            console.log(
+                "Affiliate Image File:",
+                affiliatedThumbnailFile
+            );
+
+            console.log(
+                "Affiliate Image Name:",
+                affiliatedThumbnailFile?.name || "No image"
+            );
+
+            console.log(
+                "Affiliate Image Type:",
+                affiliatedThumbnailFile?.type || "No image"
+            );
+
+            console.log(
+                "Affiliate Image Size:",
+                affiliatedThumbnailFile
+                    ? `${(
+                        affiliatedThumbnailFile.size /
+                        1024 /
+                        1024
+                    ).toFixed(2)} MB`
+                    : "No image"
+            );
+
+            console.log(
+                "============================================");
+
+
             if (
                 res.data.success
             ) {
@@ -882,6 +920,11 @@ const AdminDash = () => {
             setPublishing(false);
         }
     };
+
+
+
+
+
 
     // =========================
     // CLEAR

@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { ClipLoader } from "react-spinners";
-
+import { Helmet } from "react-helmet-async";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import AdBox from "../component/AdBox";
@@ -72,8 +72,236 @@ const BlogDetails = () => {
   const affiliateLink =
     blog?.affiliatedLink?.trim() || "";
 
+  // =========================
+  // SEO DATA
+  // =========================
+
+  const siteUrl = "https://www.fastblog.online";
+
+  const canonicalUrl = `${siteUrl}/blog/${blog.slug}`;
+
+  const seoTitle = `${blog.title} | FastBlog`;
+
+  const seoDescription =
+    blog.description ||
+    blog.intro?.slice(0, 160) ||
+    blog.title;
+
+  const publishedDate = blog.publishedAt
+    ? new Date(blog.publishedAt).toISOString()
+    : new Date().toISOString();
+
+  const modifiedDate = blog.updatedAt
+    ? new Date(blog.updatedAt).toISOString()
+    : publishedDate;
+
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-white transition-colors duration-300">
+
+      {/* =========================
+          SEO
+      ========================= */}
+      <Helmet>
+
+        {/* Basic SEO */}
+        <title>{seoTitle}</title>
+
+        <meta
+          name="description"
+          content={seoDescription}
+        />
+
+        <meta
+          name="robots"
+          content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+        />
+
+        <link
+          rel="canonical"
+          href={canonicalUrl}
+        />
+
+        {/* Open Graph */}
+        <meta
+          property="og:type"
+          content="article"
+        />
+
+        <meta
+          property="og:title"
+          content={blog.title}
+        />
+
+        <meta
+          property="og:description"
+          content={seoDescription}
+        />
+
+        <meta
+          property="og:url"
+          content={canonicalUrl}
+        />
+
+        <meta
+          property="og:site_name"
+          content="FastBlog"
+        />
+
+        {thumbnail && (
+          <meta
+            property="og:image"
+            content={thumbnail}
+          />
+        )}
+
+        {/* Article */}
+        <meta
+          property="article:published_time"
+          content={publishedDate}
+        />
+
+        <meta
+          property="article:modified_time"
+          content={modifiedDate}
+        />
+
+        {blog.category && (
+          <meta
+            property="article:section"
+            content={blog.category}
+          />
+        )}
+
+        {/* Twitter / X */}
+        <meta
+          name="twitter:card"
+          content="summary_large_image"
+        />
+
+        <meta
+          name="twitter:title"
+          content={blog.title}
+        />
+
+        <meta
+          name="twitter:description"
+          content={seoDescription}
+        />
+
+        {thumbnail && (
+          <meta
+            name="twitter:image"
+            content={thumbnail}
+          />
+        )}
+
+        {/* Article Schema */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+
+            headline: blog.title,
+
+            description: seoDescription,
+
+            image: thumbnail
+              ? [thumbnail]
+              : [],
+
+            datePublished: publishedDate,
+
+            dateModified: modifiedDate,
+
+            mainEntityOfPage: {
+              "@type": "WebPage",
+              "@id": canonicalUrl,
+            },
+
+            publisher: {
+              "@type": "Organization",
+              name: "FastBlog",
+              url: siteUrl,
+            },
+
+            isPartOf: {
+              "@type": "WebSite",
+              name: "FastBlog",
+              url: siteUrl,
+            },
+
+            ...(blog.category && {
+              articleSection: blog.category,
+            }),
+
+            ...(blog.primaryKeyword && {
+              keywords: blog.primaryKeyword,
+            }),
+          })}
+        </script>
+
+        {/* Breadcrumb Schema */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: siteUrl,
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: blog.category || "Blog",
+                item: blog.category
+                  ? `${siteUrl}/category/${encodeURIComponent(
+                    blog.category.toLowerCase()
+                  )}`
+                  : `${siteUrl}/blog`,
+              },
+              {
+                "@type": "ListItem",
+                position: 3,
+                name: blog.title,
+                item: canonicalUrl,
+              },
+            ],
+          })}
+        </script>
+
+        {/* FAQ Schema */}
+        {blog.faq?.length > 0 && (
+          <script type="application/ld+json">
+            {JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+
+              mainEntity: blog.faq
+                .filter(
+                  (item) =>
+                    item?.question &&
+                    item?.answer
+                )
+                .map((item) => ({
+                  "@type": "Question",
+
+                  name: item.question,
+
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: item.answer,
+                  },
+                })),
+            })}
+          </script>
+        )}
+
+      </Helmet>
+
 
       {/* =========================
           NAVBAR
