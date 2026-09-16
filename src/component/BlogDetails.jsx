@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useParams } from "react-router";
 import axios from "axios";
@@ -8,6 +9,10 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import AdBox from "../component/AdBox";
 
+// =====================================================
+// FETCH BLOG
+// =====================================================
+
 const fetchBlog = async (slug) => {
   const res = await axios.get(
     `${import.meta.env.VITE_API_URL}/blogs/${slug}`
@@ -16,11 +21,24 @@ const fetchBlog = async (slug) => {
   return res.data.blog;
 };
 
+// =====================================================
+// BLOG DETAILS
+// =====================================================
+
 const BlogDetails = () => {
   const { slug } = useParams();
 
+  // ===================================================
+  // STATES
+  // ===================================================
+
   const [imageLoading, setImageLoading] = useState(true);
-  const [affiliateImageLoading, setAffiliateImageLoading] = useState(true);
+  const [affiliateImageLoading, setAffiliateImageLoading] =
+    useState(true);
+
+  // ===================================================
+  // FETCH BLOG
+  // ===================================================
 
   const {
     data: blog,
@@ -34,31 +52,54 @@ const BlogDetails = () => {
     retry: 1,
   });
 
+  // ===================================================
+  // LOADING
+  // ===================================================
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-white flex items-center justify-center">
         <div className="text-center">
-          <ClipLoader size={40} color="#2563eb" />
+
+          <ClipLoader
+            size={40}
+            color="#2563eb"
+          />
+
           <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">
             Loading blog...
           </p>
+
         </div>
       </div>
     );
   }
 
+  // ===================================================
+  // ERROR
+  // ===================================================
+
   if (isError || !blog) {
     return (
       <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-white flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold">Blog Not Found</h2>
+
+          <h2 className="text-2xl font-bold">
+            Blog Not Found
+          </h2>
+
           <p className="mt-2 text-gray-500 dark:text-gray-400">
             The blog you are looking for does not exist.
           </p>
+
         </div>
       </div>
     );
   }
+
+  // ===================================================
+  // IMAGE DATA
+  // ===================================================
 
   const thumbnail =
     blog?.thumbnail?.url ||
@@ -72,56 +113,119 @@ const BlogDetails = () => {
   const affiliateLink =
     blog?.affiliatedLink?.trim() || "";
 
-  // =========================
+  // ===================================================
   // SEO DATA
-  // =========================
+  // ===================================================
 
-  const siteUrl = "https://www.fastblog.online";
+  const siteUrl =
+    "https://www.fastblog.online";
 
-  const canonicalUrl = `${siteUrl}/blog/${blog.slug}`;
+  // ===================================================
+  // DYNAMIC CANONICAL
+  // ===================================================
 
-  const seoTitle = `${blog.title} | FastBlog`;
+  const canonicalUrl =
+    `${siteUrl}/blog/${blog.slug}`;
+
+  // ===================================================
+  // DYNAMIC TITLE
+  // ===================================================
+
+  const seoTitle =
+    `${blog.title} | FastBlog`;
+
+  // ===================================================
+  // DYNAMIC DESCRIPTION
+  // ===================================================
 
   const seoDescription =
     blog.description ||
     blog.intro?.slice(0, 160) ||
     blog.title;
 
-  const publishedDate = blog.publishedAt
-    ? new Date(blog.publishedAt).toISOString()
-    : new Date().toISOString();
+  // ===================================================
+  // PUBLISHED DATE
+  // ===================================================
 
-  const modifiedDate = blog.updatedAt
-    ? new Date(blog.updatedAt).toISOString()
-    : publishedDate;
+  const publishedDate =
+    blog.publishedAt
+      ? new Date(
+        blog.publishedAt
+      ).toISOString()
+      : new Date().toISOString();
+
+  // ===================================================
+  // MODIFIED DATE
+  // ===================================================
+
+  const modifiedDate =
+    blog.updatedAt
+      ? new Date(
+        blog.updatedAt
+      ).toISOString()
+      : publishedDate;
+
+  // ===================================================
+  // RETURN
+  // ===================================================
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-white transition-colors duration-300">
 
-      {/* =========================
+      {/* =================================================
           SEO
-      ========================= */}
+      ================================================= */}
+
       <Helmet>
 
-        {/* Basic SEO */}
-        <title>{seoTitle}</title>
+        {/* =================================================
+            1. DYNAMIC TITLE
+        ================================================= */}
+
+        <title>
+          {seoTitle}
+        </title>
+
+
+        {/* =================================================
+            2. DYNAMIC DESCRIPTION
+        ================================================= */}
 
         <meta
           name="description"
           content={seoDescription}
         />
 
+
+        {/* =================================================
+            ROBOTS
+        ================================================= */}
+
         <meta
           name="robots"
           content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
         />
+
+        <meta
+          name="googlebot"
+          content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+        />
+
+
+        {/* =================================================
+            3. DYNAMIC CANONICAL
+        ================================================= */}
 
         <link
           rel="canonical"
           href={canonicalUrl}
         />
 
-        {/* Open Graph */}
+
+        {/* =================================================
+            4. OG / OPEN GRAPH
+        ================================================= */}
+
         <meta
           property="og:type"
           content="article"
@@ -148,13 +252,24 @@ const BlogDetails = () => {
         />
 
         {thumbnail && (
-          <meta
-            property="og:image"
-            content={thumbnail}
-          />
+          <>
+            <meta
+              property="og:image"
+              content={thumbnail}
+            />
+
+            <meta
+              property="og:image:alt"
+              content={`${blog.title} - FastBlog`}
+            />
+          </>
         )}
 
-        {/* Article */}
+
+        {/* =================================================
+            ARTICLE META
+        ================================================= */}
+
         <meta
           property="article:published_time"
           content={publishedDate}
@@ -172,7 +287,11 @@ const BlogDetails = () => {
           />
         )}
 
-        {/* Twitter / X */}
+
+        {/* =================================================
+            TWITTER / X
+        ================================================= */}
+
         <meta
           name="twitter:card"
           content="summary_large_image"
@@ -189,16 +308,28 @@ const BlogDetails = () => {
         />
 
         {thumbnail && (
-          <meta
-            name="twitter:image"
-            content={thumbnail}
-          />
+          <>
+            <meta
+              name="twitter:image"
+              content={thumbnail}
+            />
+
+            <meta
+              name="twitter:image:alt"
+              content={`${blog.title} - FastBlog`}
+            />
+          </>
         )}
 
-        {/* Article Schema */}
+
+        {/* =================================================
+            5. ARTICLE SCHEMA
+        ================================================= */}
+
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
+
             "@type": "Article",
 
             headline: blog.title,
@@ -209,14 +340,34 @@ const BlogDetails = () => {
               ? [thumbnail]
               : [],
 
-            datePublished: publishedDate,
+            datePublished:
+              publishedDate,
 
-            dateModified: modifiedDate,
+            dateModified:
+              modifiedDate,
+
+            // =============================================
+            // AUTHOR
+            // =============================================
+
+            author: {
+              "@type": "Organization",
+              name: "FastBlog",
+              url: siteUrl,
+            },
+
+            // =============================================
+            // MAIN ENTITY
+            // =============================================
 
             mainEntityOfPage: {
               "@type": "WebPage",
               "@id": canonicalUrl,
             },
+
+            // =============================================
+            // PUBLISHER
+            // =============================================
 
             publisher: {
               "@type": "Organization",
@@ -224,78 +375,125 @@ const BlogDetails = () => {
               url: siteUrl,
             },
 
+            // =============================================
+            // WEBSITE
+            // =============================================
+
             isPartOf: {
               "@type": "WebSite",
               name: "FastBlog",
               url: siteUrl,
             },
 
+            // =============================================
+            // ARTICLE SECTION
+            // =============================================
+
             ...(blog.category && {
-              articleSection: blog.category,
+              articleSection:
+                blog.category,
             }),
 
+            // =============================================
+            // KEYWORDS
+            // =============================================
+
             ...(blog.primaryKeyword && {
-              keywords: blog.primaryKeyword,
+              keywords:
+                blog.primaryKeyword,
             }),
           })}
         </script>
 
-        {/* Breadcrumb Schema */}
+
+        {/* =================================================
+            6. BREADCRUMB SCHEMA
+        ================================================= */}
+
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
+
             "@type": "BreadcrumbList",
 
             itemListElement: [
+
               {
                 "@type": "ListItem",
+
                 position: 1,
+
                 name: "Home",
+
                 item: siteUrl,
               },
+
               {
                 "@type": "ListItem",
+
                 position: 2,
-                name: blog.category || "Blog",
+
+                name:
+                  blog.category ||
+                  "Blog",
+
                 item: blog.category
                   ? `${siteUrl}/category/${encodeURIComponent(
                     blog.category.toLowerCase()
                   )}`
                   : `${siteUrl}/blog`,
               },
+
               {
                 "@type": "ListItem",
+
                 position: 3,
+
                 name: blog.title,
+
                 item: canonicalUrl,
               },
+
             ],
           })}
         </script>
 
-        {/* FAQ Schema */}
+
+        {/* =================================================
+            7. FAQ SCHEMA
+        ================================================= */}
+
         {blog.faq?.length > 0 && (
           <script type="application/ld+json">
             {JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
+              "@context":
+                "https://schema.org",
 
-              mainEntity: blog.faq
-                .filter(
-                  (item) =>
-                    item?.question &&
-                    item?.answer
-                )
-                .map((item) => ({
-                  "@type": "Question",
+              "@type":
+                "FAQPage",
 
-                  name: item.question,
+              mainEntity:
+                blog.faq
+                  .filter(
+                    (item) =>
+                      item?.question &&
+                      item?.answer
+                  )
+                  .map((item) => ({
+                    "@type":
+                      "Question",
 
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: item.answer,
-                  },
-                })),
+                    name:
+                      item.question,
+
+                    acceptedAnswer: {
+                      "@type":
+                        "Answer",
+
+                      text:
+                        item.answer,
+                    },
+                  })),
             })}
           </script>
         )}
@@ -303,46 +501,64 @@ const BlogDetails = () => {
       </Helmet>
 
 
-      {/* =========================
+      {/* =================================================
           NAVBAR
-      ========================= */}
+      ================================================= */}
+
       <Navbar />
 
-      {/* =========================
+
+      {/* =================================================
           MAIN CONTENT
-      ========================= */}
+      ================================================= */}
+
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
 
-        {/* =========================
+
+        {/* =================================================
             CATEGORY
-        ========================= */}
+        ================================================= */}
+
         {blog.category && (
           <span className="inline-flex rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 px-4 py-1.5 text-xs sm:text-sm font-semibold">
             {blog.category}
           </span>
         )}
 
-        {/* =========================
+
+        {/* =================================================
             BLOG THUMBNAIL
-        ========================= */}
+        ================================================= */}
+
         {thumbnail && (
           <div className="mt-6 sm:mt-8 mb-6 sm:mb-8 overflow-hidden rounded-2xl sm:rounded-3xl bg-gray-100 dark:bg-gray-900 shadow-xl">
 
+            {/* IMAGE LOADING */}
+
             {imageLoading && (
               <div className="flex h-[200px] sm:h-[300px] md:h-[400px] lg:h-[500px] items-center justify-center">
+
                 <ClipLoader
                   size={45}
                   color="#2563eb"
                 />
+
               </div>
             )}
 
+
+            {/* FEATURED IMAGE */}
+
             <img
               src={thumbnail}
-              alt={blog.title}
+              alt={`${blog.title} - FastBlog`}
               loading="eager"
-              onLoad={() => setImageLoading(false)}
-              onError={() => setImageLoading(false)}
+              onLoad={() =>
+                setImageLoading(false)
+              }
+              onError={() =>
+                setImageLoading(false)
+              }
               className={`
                 w-full
                 h-[200px]
@@ -356,22 +572,30 @@ const BlogDetails = () => {
                 ${imageLoading ? "hidden" : "block"}
               `}
             />
+
           </div>
         )}
 
-        {/* =========================
+
+        {/* =================================================
             TITLE
-        ========================= */}
+        ================================================= */}
+
         <h1 className="mt-5 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
           {blog.title}
         </h1>
 
-        {/* =========================
+
+        {/* =================================================
             DATE
-        ========================= */}
+        ================================================= */}
+
         <p className="mt-3 text-sm sm:text-base text-gray-500 dark:text-gray-400">
+
           {blog.publishedAt
-            ? new Date(blog.publishedAt).toLocaleDateString(
+            ? new Date(
+              blog.publishedAt
+            ).toLocaleDateString(
               "en-BD",
               {
                 year: "numeric",
@@ -380,116 +604,158 @@ const BlogDetails = () => {
               }
             )
             : ""}
+
         </p>
 
-        {/* =========================
+
+        {/* =================================================
             TOP AD
-        ========================= */}
+        ================================================= */}
+
         <div className="my-6 sm:my-8">
+
           <AdBox
             size="banner"
             position="top"
             isAdEnabled={true}
           />
+
         </div>
 
-        {/* =========================
+
+        {/* =================================================
             INTRO
-        ========================= */}
+        ================================================= */}
+
         {blog.intro && (
           <div className="text-base sm:text-lg leading-7 sm:leading-8 text-gray-700 dark:text-gray-300 mb-8 sm:mb-10">
+
             {blog.intro}
+
           </div>
         )}
 
-        {/* =========================
+
+        {/* =================================================
             AD AFTER INTRO
-        ========================= */}
+        ================================================= */}
+
         <div className="my-6 sm:my-8">
+
           <AdBox
             size="banner"
             position="after-intro"
             isAdEnabled={true}
           />
+
         </div>
 
-        {/* =========================
-            SECTIONS
-        ========================= */}
-        {blog.sections?.map((section, index) => (
-          <div key={index}>
 
-            <section className="mb-10 sm:mb-12">
+        {/* =================================================
+            BLOG SECTIONS
+        ================================================= */}
 
-              {section.heading && (
-                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-5">
-                  {section.heading}
-                </h2>
-              )}
+        {blog.sections?.map(
+          (section, index) => (
 
-              {section.content && (
-                <p className="text-base sm:text-lg leading-7 sm:leading-8 text-gray-700 dark:text-gray-300 whitespace-pre-line">
-                  {section.content}
-                </p>
-              )}
+            <div key={index}>
 
-              {/* Example */}
-              {section.example && (
-                <div className="mt-5 sm:mt-6 rounded-xl border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-950/40 p-4 sm:p-5">
+              <section className="mb-10 sm:mb-12">
 
-                  <h4 className="font-semibold text-blue-700 dark:text-blue-300 mb-2">
-                    উদাহরণ
-                  </h4>
 
-                  <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300">
-                    {section.example}
+                {/* SECTION HEADING */}
+
+                {section.heading && (
+                  <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-5">
+                    {section.heading}
+                  </h2>
+                )}
+
+
+                {/* SECTION CONTENT */}
+
+                {section.content && (
+                  <p className="text-base sm:text-lg leading-7 sm:leading-8 text-gray-700 dark:text-gray-300 whitespace-pre-line">
+                    {section.content}
                   </p>
+                )}
+
+
+                {/* =================================================
+                    EXAMPLE
+                ================================================= */}
+
+                {section.example && (
+                  <div className="mt-5 sm:mt-6 rounded-xl border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-950/40 p-4 sm:p-5">
+
+                    <h4 className="font-semibold text-blue-700 dark:text-blue-300 mb-2">
+                      উদাহরণ
+                    </h4>
+
+                    <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300">
+                      {section.example}
+                    </p>
+
+                  </div>
+                )}
+
+
+                {/* =================================================
+                    IMPORTANT POINTS
+                ================================================= */}
+
+                {section.importantPoints?.length > 0 && (
+                  <div className="mt-5 sm:mt-6">
+
+                    <h3 className="font-semibold text-base sm:text-lg mb-3">
+                      গুরুত্বপূর্ণ পয়েন্ট
+                    </h3>
+
+                    <ul className="list-disc pl-5 sm:pl-6 space-y-2 text-sm sm:text-base text-gray-700 dark:text-gray-300">
+
+                      {section.importantPoints.map(
+                        (point, idx) => (
+
+                          <li key={idx}>
+                            {point}
+                          </li>
+
+                        )
+                      )}
+
+                    </ul>
+
+                  </div>
+                )}
+
+              </section>
+
+
+              {/* =================================================
+                  SECTION AD
+              ================================================= */}
+
+              {(index + 1) % 2 === 0 && (
+                <div className="my-8 sm:my-10">
+
+                  <AdBox
+                    size="banner"
+                    position={`section-${index + 1}`}
+                    isAdEnabled={true}
+                  />
 
                 </div>
               )}
 
-              {/* Important Points */}
-              {section.importantPoints?.length > 0 && (
-                <div className="mt-5 sm:mt-6">
+            </div>
+          )
+        )}
 
-                  <h3 className="font-semibold text-base sm:text-lg mb-3">
-                    গুরুত্বপূর্ণ পয়েন্ট
-                  </h3>
 
-                  <ul className="list-disc pl-5 sm:pl-6 space-y-2 text-sm sm:text-base text-gray-700 dark:text-gray-300">
-
-                    {section.importantPoints.map((point, idx) => (
-                      <li key={idx}>
-                        {point}
-                      </li>
-                    ))}
-
-                  </ul>
-
-                </div>
-              )}
-
-            </section>
-
-            {/* =========================
-                SECTION AD
-            ========================= */}
-            {(index + 1) % 2 === 0 && (
-              <div className="my-8 sm:my-10">
-                <AdBox
-                  size="banner"
-                  position={`section-${index + 1}`}
-                  isAdEnabled={true}
-                />
-              </div>
-            )}
-
-          </div>
-        ))}
-
-        {/* =========================
+        {/* =================================================
             EXPERT TIPS
-        ========================= */}
+        ================================================= */}
+
         {blog.expertTips?.length > 0 && (
           <section className="mt-10 sm:mt-12 rounded-2xl border border-green-200 dark:border-green-900 bg-green-50 dark:bg-green-950/30 p-5 sm:p-6">
 
@@ -499,70 +765,96 @@ const BlogDetails = () => {
 
             <ul className="space-y-3">
 
-              {blog.expertTips.map((tip, i) => (
-                <li
-                  key={i}
-                  className="text-sm sm:text-base text-gray-700 dark:text-gray-300"
-                >
-                  ✅ {tip}
-                </li>
-              ))}
+              {blog.expertTips.map(
+                (tip, i) => (
+
+                  <li
+                    key={i}
+                    className="text-sm sm:text-base text-gray-700 dark:text-gray-300"
+                  >
+                    ✅ {tip}
+                  </li>
+
+                )
+              )}
 
             </ul>
 
           </section>
         )}
 
+
         {/* =====================================================
             AFFILIATE PRODUCT SECTION
         ===================================================== */}
-        {(affiliateImage || affiliateLink) && (
-          <section className="mt-12 sm:mt-14">
 
-            {/* Affiliate Heading */}
-            <div className="mb-4 sm:mb-5 text-center">
+        {(affiliateImage ||
+          affiliateLink) && (
 
-              <span className="inline-flex items-center rounded-full bg-orange-100 dark:bg-orange-900/30 px-3 py-1 text-xs font-semibold text-orange-700 dark:text-orange-300">
-                Affiliate
-              </span>
+            <section className="mt-12 sm:mt-14">
 
-              <h2 className="mt-3 text-xl sm:text-2xl md:text-3xl font-bold">
-                Recommended Product
-              </h2>
 
-            </div>
+              {/* AFFILIATE HEADING */}
 
-            {/* Affiliate Card */}
-            <div className="overflow-hidden rounded-2xl sm:rounded-3xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-lg">
+              <div className="mb-4 sm:mb-5 text-center">
 
-              {/* =========================
+                <span className="inline-flex items-center rounded-full bg-orange-100 dark:bg-orange-900/30 px-3 py-1 text-xs font-semibold text-orange-700 dark:text-orange-300">
+                  Affiliate
+                </span>
+
+                <h2 className="mt-3 text-xl sm:text-2xl md:text-3xl font-bold">
+                  Recommended Product
+                </h2>
+
+              </div>
+
+
+              {/* AFFILIATE CARD */}
+
+              <div className="overflow-hidden rounded-2xl sm:rounded-3xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-lg">
+
+
+                {/* =================================================
                   AFFILIATE IMAGE
                   NO LINK HERE
-              ========================= */}
-              {affiliateImage && (
-                <div className="relative w-full bg-gray-100 dark:bg-gray-950">
+              ================================================= */}
 
-                  {/* Image Loading */}
-                  {affiliateImageLoading && (
-                    <div className="flex h-[220px] sm:h-[300px] md:h-[400px] items-center justify-center">
-                      <ClipLoader
-                        size={40}
-                        color="#2563eb"
-                      />
-                    </div>
-                  )}
+                {affiliateImage && (
 
-                  <img
-                    src={affiliateImage}
-                    alt="Affiliate product"
-                    loading="lazy"
-                    onLoad={() =>
-                      setAffiliateImageLoading(false)
-                    }
-                    onError={() =>
-                      setAffiliateImageLoading(false)
-                    }
-                    className={`
+                  <div className="relative w-full bg-gray-100 dark:bg-gray-950">
+
+
+                    {/* IMAGE LOADING */}
+
+                    {affiliateImageLoading && (
+                      <div className="flex h-[220px] sm:h-[300px] md:h-[400px] items-center justify-center">
+
+                        <ClipLoader
+                          size={40}
+                          color="#2563eb"
+                        />
+
+                      </div>
+                    )}
+
+
+                    {/* AFFILIATE IMAGE */}
+
+                    <img
+                      src={affiliateImage}
+                      alt="Affiliate product"
+                      loading="lazy"
+                      onLoad={() =>
+                        setAffiliateImageLoading(
+                          false
+                        )
+                      }
+                      onError={() =>
+                        setAffiliateImageLoading(
+                          false
+                        )
+                      }
+                      className={`
                       w-full
                       h-[220px]
                       sm:h-[300px]
@@ -575,38 +867,47 @@ const BlogDetails = () => {
                       md:p-8
                       ${affiliateImageLoading ? "hidden" : "block"}
                     `}
-                  />
+                    />
 
-                </div>
-              )}
+                  </div>
+                )}
 
-              {/* =========================
+
+                {/* =================================================
                   AFFILIATE CONTENT
-              ========================= */}
-              <div className="p-5 sm:p-6 md:p-8 text-center">
+              ================================================= */}
 
-                {/* Sponsored / Affiliate Label */}
-                <p className="text-xs sm:text-sm font-semibold text-orange-600 dark:text-orange-400">
-                  Affiliate / Sponsored
-                </p>
+                <div className="p-5 sm:p-6 md:p-8 text-center">
 
-                {/* Disclosure */}
-                <p className="mt-2 text-xs sm:text-sm leading-6 text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
-                  এই লিংকের মাধ্যমে কেনাকাটা করলে FastBlog কমিশন পেতে পারে।
-                  আপনার জন্য পণ্যের মূল্য অতিরিক্ত পরিবর্তন হবে না।
-                </p>
 
-                {/* =========================
+                  {/* SPONSORED LABEL */}
+
+                  <p className="text-xs sm:text-sm font-semibold text-orange-600 dark:text-orange-400">
+                    Affiliate / Sponsored
+                  </p>
+
+
+                  {/* DISCLOSURE */}
+
+                  <p className="mt-2 text-xs sm:text-sm leading-6 text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
+                    এই লিংকের মাধ্যমে কেনাকাটা করলে FastBlog কমিশন পেতে পারে।
+                    আপনার জন্য পণ্যের মূল্য অতিরিক্ত পরিবর্তন হবে না।
+                  </p>
+
+
+                  {/* =================================================
                     AFFILIATE LINK
-                ========================= */}
-                {affiliateLink && (
-                  <div className="mt-5 sm:mt-6">
+                ================================================= */}
 
-                    <a
-                      href={affiliateLink}
-                      target="_blank"
-                      rel="sponsored noopener noreferrer"
-                      className="
+                  {affiliateLink && (
+
+                    <div className="mt-5 sm:mt-6">
+
+                      <a
+                        href={affiliateLink}
+                        target="_blank"
+                        rel="sponsored noopener noreferrer"
+                        className="
                         inline-flex
                         w-full
                         sm:w-auto
@@ -630,67 +931,88 @@ const BlogDetails = () => {
                         hover:scale-[1.02]
                         active:scale-95
                       "
-                    >
-                      🛒 View Product / Offer
-                    </a>
+                      >
+                        🛒 View Product / Offer
+                      </a>
 
-                  </div>
-                )}
+                    </div>
+
+                  )}
+
+                </div>
 
               </div>
 
-            </div>
+            </section>
 
-          </section>
-        )}
+          )}
 
-        {/* =========================
+
+        {/* =================================================
             BEFORE FAQ AD
-        ========================= */}
+        ================================================= */}
+
         {blog.faq?.length > 0 && (
+
           <div className="my-8 sm:my-10">
+
             <AdBox
               size="banner"
               position="before-faq"
               isAdEnabled={true}
             />
+
           </div>
+
         )}
 
-        {/* =========================
+
+        {/* =================================================
             FAQ
-        ========================= */}
+        ================================================= */}
+
         {blog.faq?.length > 0 && (
+
           <section className="mt-8 sm:mt-10">
+
 
             <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">
               FAQ
             </h2>
 
-            {blog.faq.map((item, i) => (
-              <div
-                key={i}
-                className="border-b border-gray-200 dark:border-gray-800 py-4 sm:py-5"
-              >
 
-                <h3 className="font-semibold text-base sm:text-lg">
-                  {item.question}
-                </h3>
+            {blog.faq.map(
+              (item, i) => (
 
-                <p className="mt-3 text-sm sm:text-base leading-7 text-gray-700 dark:text-gray-300">
-                  {item.answer}
-                </p>
+                <div
+                  key={i}
+                  className="border-b border-gray-200 dark:border-gray-800 py-4 sm:py-5"
+                >
 
-              </div>
-            ))}
+                  <h3 className="font-semibold text-base sm:text-lg">
+                    {item.question}
+                  </h3>
+
+                  <p className="mt-3 text-sm sm:text-base leading-7 text-gray-700 dark:text-gray-300">
+                    {item.answer}
+                  </p>
+
+                </div>
+
+              )
+            )}
 
           </section>
+
         )}
 
-        {/* =========================
+
+        {/* =================================================
             CONCLUSION
-        ========================= */}
+        ================================================= */}
+
         {blog.conclusion && (
+
           <section className="mt-12 sm:mt-14 rounded-2xl bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-5 sm:p-8">
 
             <h2 className="text-xl sm:text-2xl font-bold mb-4">
@@ -702,17 +1024,26 @@ const BlogDetails = () => {
             </p>
 
           </section>
+
         )}
 
       </main>
 
-      {/* =========================
+
+      {/* =================================================
           FOOTER
-      ========================= */}
+      ================================================= */}
+
       <Footer />
 
     </div>
   );
 };
 
+
+// =====================================================
+// EXPORT
+// =====================================================
+
 export default BlogDetails;
+
