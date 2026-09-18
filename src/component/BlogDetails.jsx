@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useParams } from "react-router";
 import axios from "axios";
@@ -17,6 +16,22 @@ const fetchBlog = async (slug) => {
   const res = await axios.get(
     `${import.meta.env.VITE_API_URL}/blogs/${slug}`
   );
+
+  // =====================================================
+  // DEBUG CONSOLE LOGS - AFFILIATE DATA CHECK
+  // =====================================================
+
+  console.log("========== RAW API RESPONSE ==========");
+  console.log(res.data);
+
+  console.log("========== BLOG OBJECT ==========");
+  console.log(res.data.blog);
+
+  console.log("========== AFFILIATED THUMBNAIL ==========");
+  console.log(res.data.blog?.affiliatedThumbnail);
+
+  console.log("========== AFFILIATED LINK ==========");
+  console.log(res.data.blog?.affiliatedLink);
 
   return res.data.blog;
 };
@@ -112,6 +127,19 @@ const BlogDetails = () => {
 
   const affiliateLink =
     blog?.affiliatedLink?.trim() || "";
+
+  // =====================================================
+  // DEBUG CONSOLE LOGS - COMPUTED AFFILIATE VALUES
+  // =====================================================
+
+  console.log("========== FULL BLOG (component) ==========");
+  console.log(blog);
+
+  console.log("========== affiliateImage (final value) ==========");
+  console.log(affiliateImage);
+
+  console.log("========== affiliateLink (final value) ==========");
+  console.log(affiliateLink);
 
   // ===================================================
   // SEO DATA
@@ -821,13 +849,13 @@ const BlogDetails = () => {
 
                 {affiliateImage && (
 
-                  <div className="relative w-full bg-gray-100 dark:bg-gray-950">
+                  <div className="relative w-full aspect-[4/3] sm:aspect-[16/9] bg-gray-100 dark:bg-gray-950">
 
 
                     {/* IMAGE LOADING */}
 
                     {affiliateImageLoading && (
-                      <div className="flex h-[220px] sm:h-[300px] md:h-[400px] items-center justify-center">
+                      <div className="absolute inset-0 flex items-center justify-center">
 
                         <ClipLoader
                           size={40}
@@ -849,16 +877,18 @@ const BlogDetails = () => {
                           false
                         )
                       }
-                      onError={() =>
+                      onError={() => {
+                        console.log(
+                          "AFFILIATE IMAGE FAILED TO LOAD:",
+                          affiliateImage
+                        );
                         setAffiliateImageLoading(
                           false
-                        )
-                      }
+                        );
+                      }}
                       className={`
                       w-full
-                      h-[220px]
-                      sm:h-[300px]
-                      md:h-[400px]
+                      h-full
                       object-contain
                       bg-white
                       dark:bg-gray-950
@@ -946,6 +976,21 @@ const BlogDetails = () => {
             </section>
 
           )}
+
+        {/* =================================================
+            AFFILIATE DEBUG NOTE (dev only)
+            If neither affiliateImage nor affiliateLink exist,
+            the whole section above renders nothing - check
+            console logs above to see what the API returned.
+        ================================================= */}
+
+        {!affiliateImage && !affiliateLink && (
+          <>
+            {console.log(
+              "AFFILIATE SECTION HIDDEN: no affiliateImage and no affiliateLink found on blog object."
+            )}
+          </>
+        )}
 
 
         {/* =================================================
@@ -1046,4 +1091,3 @@ const BlogDetails = () => {
 // =====================================================
 
 export default BlogDetails;
-
