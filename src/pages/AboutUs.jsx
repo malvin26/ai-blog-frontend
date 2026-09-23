@@ -111,7 +111,7 @@ const AboutUs = () => {
               হয়। যোগাযোগের প্রয়োজনে দয়া করে ফোন কল না করে শুধুমাত্র{" "}
 
               <a
-                href="https://wa.me/8801741416807"
+                href="https://wa.me/8801617370355"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 text-green-600 dark:text-green-400 font-medium hover:underline"
