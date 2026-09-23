@@ -206,7 +206,7 @@ const AboutUs = () => {
 
             {/* WhatsApp */}
             <a
-              href="https://wa.me/8801741416807"
+              href="https://wa.me/8801617370355"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white transition-all duration-200 hover:bg-green-700 hover:shadow-md"
