@@ -6,31 +6,52 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Favicon -->
+  <!-- =========================
+       FAVICON
+  ========================== -->
   <link rel="icon" type="image/png" href="/image/fastblog_favicon_48x48.png" />
 
-  <!-- Bing Webmaster Verification -->
+  <!-- =========================
+       BING WEBMASTER VERIFICATION
+  ========================== -->
   <meta name="msvalidate.01" content="3EB618426A39E356E6728046492E1690" />
 
-  <!-- Primary SEO -->
-  <title>
-    FastBlog
-  </title>
+  <!-- =========================
+       PRIMARY SEO
+  ========================== -->
+
+  <!-- Homepage brand title -->
+  <title>FastBlog</title>
 
   <meta name="description"
     content="FastBlog-এ পড়ুন প্রযুক্তি, AI, ব্যবসা, শিক্ষা, productivity ও lifestyle নিয়ে সহজ, তথ্যবহুল ও ব্যবহারিক বাংলা ব্লগ।" />
+
+  <meta name="author" content="FastBlog" />
 
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 
   <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 
-  <!-- Canonical -->
+  <!-- =========================
+       CANONICAL
+  ========================== -->
   <link rel="canonical" href="https://www.fastblog.online/" />
 
-  <!-- Theme -->
+  <!-- =========================
+       LANGUAGE
+  ========================== -->
+  <link rel="alternate" hreflang="bn" href="https://www.fastblog.online/" />
+
+  <link rel="alternate" hreflang="x-default" href="https://www.fastblog.online/" />
+
+  <!-- =========================
+       THEME
+  ========================== -->
   <meta name="theme-color" content="#0f172a" />
 
-  <!-- Open Graph -->
+  <!-- =========================
+       OPEN GRAPH
+  ========================== -->
   <meta property="og:type" content="website" />
 
   <meta property="og:site_name" content="FastBlog" />
@@ -44,9 +65,13 @@
 
   <meta property="og:image" content="https://www.fastblog.online/image/brand_logo.png" />
 
-  <meta property="og:image:alt" content="FastBlog" />
+  <meta property="og:image:alt" content="FastBlog — বাংলা প্রযুক্তি, AI, ব্যবসা ও তথ্যবহুল ব্লগ" />
 
-  <!-- Twitter / X -->
+  <meta property="og:locale" content="bn_BD" />
+
+  <!-- =========================
+       TWITTER / X
+  ========================== -->
   <meta name="twitter:card" content="summary_large_image" />
 
   <meta name="twitter:title" content="FastBlog — বাংলা প্রযুক্তি, AI, ব্যবসা ও তথ্যবহুল ব্লগ" />
@@ -56,10 +81,12 @@
 
   <meta name="twitter:image" content="https://www.fastblog.online/image/brand_logo.png" />
 
-  <meta name="twitter:image:alt" content="FastBlog" />
+  <meta name="twitter:image:alt" content="FastBlog — বাংলা প্রযুক্তি, AI, ব্যবসা ও তথ্যবহুল ব্লগ" />
 
+  <!-- =========================
+       GOOGLE ANALYTICS
+  ========================== -->
 
-  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-84124028XG"></script>
 
   <script>
@@ -69,17 +96,19 @@
       dataLayer.push(arguments);
     }
 
-    gtag('js', new Date());
+    gtag("js", new Date());
 
-    gtag('config', 'G-84124028XG');
+    gtag("config", "G-84124028XG");
   </script>
 
 </head>
 
 <body>
 
+  <!-- React Application -->
   <div id="root"></div>
 
+  <!-- Vite React Entry -->
   <script type="module" src="/src/main.jsx"></script>
 
 </body>
