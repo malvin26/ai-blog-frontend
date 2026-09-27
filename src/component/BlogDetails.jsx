@@ -142,24 +142,6 @@ const BlogDetails = () => {
     blog?.affiliatedLink?.trim() ||
     "";
 
-  // ===================================================
-  // DEBUG
-  // ===================================================
-
-  console.log(
-    "========== FULL BLOG (component) =========="
-  );
-  console.log(blog);
-
-  console.log(
-    "========== affiliateImage (final value) =========="
-  );
-  console.log(affiliateImage);
-
-  console.log(
-    "========== affiliateLink (final value) =========="
-  );
-  console.log(affiliateLink);
 
   // ===================================================
   // SEO DATA
