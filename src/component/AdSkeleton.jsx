@@ -4,8 +4,11 @@ const AdSkeleton = ({ size = "banner" }) => {
       <div
         className="
           w-full
-          max-w-5xl
           aspect-video
+          max-w-5xl
+          lg:w-[395px]
+          lg:h-[221px]
+          lg:aspect-auto
           bg-gray-200
           animate-pulse
           rounded-xl

@@ -31,30 +31,35 @@ const AdBox = ({
 
   return (
     <div className="w-full flex justify-center my-5 px-0">
-      <div className="w-full max-w-5xl">
+      <div className="w-full max-w-5xl flex justify-center">
 
         {/* =========================================
             BEFORE ADSENSE APPROVAL
         ========================================== */}
         {!isAdEnabled && (
-          <>
+          <div className="w-full flex flex-col items-center">
             <AdSkeleton size={size} />
 
             <p className="text-center text-xs text-gray-400 mt-1">
               Ad Placeholder ({position})
             </p>
-          </>
+          </div>
         )}
 
         {/* =========================================
-            FIXED 16:9 ADSENSE CONTAINER
+            RESPONSIVE ADSENSE CONTAINER
+            Mobile/Tablet: full width, 16:9
+            Desktop: fixed 395x221 box
         ========================================== */}
         {isAdEnabled && (
           <div
             className="
               relative
               w-full
-              aspect-[16/9]
+              aspect-video
+              lg:w-[395px]
+              lg:h-[221px]
+              lg:aspect-auto
               overflow-hidden
               rounded-xl
               border
