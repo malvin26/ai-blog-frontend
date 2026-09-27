@@ -54,7 +54,7 @@ const AdBox = ({
             className="
               relative
               w-full
-              aspect-video
+              aspect-[16/9]
               overflow-hidden
               rounded-xl
               border
@@ -71,6 +71,8 @@ const AdBox = ({
               }}
               data-ad-client={adClient}
               data-ad-slot={adSlotId}
+              data-ad-format="auto"
+              data-full-width-responsive="true"
             />
           </div>
         )}
