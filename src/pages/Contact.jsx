@@ -1,4 +1,6 @@
+
 import { Link } from "react-router";
+import { MapPin, ExternalLink, Mail } from "lucide-react";
 import Navbar from "../component/Navbar";
 import Footer from "../component/Footer";
 
@@ -29,26 +31,43 @@ const Contact = () => {
             {/* Email */}
             <div className="rounded-xl bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-5">
 
-              <h3 className="text-lg font-semibold">
-                📧 Email
+              <h3 className="flex items-center gap-2 text-lg font-semibold">
+                <Mail className="text-blue-500" size={20} />
+                Email
               </h3>
 
-              <p className="mt-2 text-gray-700 dark:text-gray-300">
+              <a
+                href="mailto:malvinjack26@gmail.com"
+                className="inline-block mt-2 text-blue-600 dark:text-blue-400 hover:underline"
+              >
                 malvinjack26@gmail.com
-              </p>
+              </a>
 
             </div>
 
             {/* Location */}
             <div className="rounded-xl bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-5">
 
-              <h3 className="text-lg font-semibold">
-                📍 Location
+              <h3 className="flex items-center gap-2 text-lg font-semibold">
+                <MapPin className="text-red-500" size={21} />
+                Our Location
               </h3>
 
-              <p className="mt-2 text-gray-700 dark:text-gray-300">
+              <p className="mt-3 text-gray-700 dark:text-gray-300">
                 Savar, Bangladesh
               </p>
+
+              <a
+                href="https://maps.app.goo.gl/hh4vko7eJn6f6BHV8"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="View our location on Google Maps"
+                className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors"
+              >
+                <MapPin size={17} />
+                View on Google Maps
+                <ExternalLink size={15} />
+              </a>
 
             </div>
 

@@ -1,5 +1,6 @@
 
 import { Link } from "react-router";
+import { MapPin, Mail, Map } from "lucide-react";
 import AdBox from "./AdBox";
 import brandImage from "/image/brand_logo.png";
 
@@ -48,12 +49,38 @@ const Footer = () => {
 
                 {/* CONTACT */}
                 <div>
-                    <h3 className="font-bold mb-2">
+                    <h3 className="font-bold mb-3">
                         Contact
                     </h3>
 
-                    <p>Email: malvinjack26@gmail.com</p>
-                    <p>Location: Savar, Bangladesh</p>
+                    <p className="flex items-center gap-2 mb-3">
+                        <Mail size={16} className="text-blue-400 shrink-0" />
+                        <a
+                            href="mailto:malvinjack26@gmail.com"
+                            className="hover:text-blue-400 transition"
+                        >
+                            malvinjack26@gmail.com
+                        </a>
+                    </p>
+
+                    <a
+                        href="https://maps.app.goo.gl/hh4vko7eJn6f6BHV8"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="View FastBlog location on Google Maps"
+                        className="flex items-start gap-2 text-gray-300 hover:text-blue-400 transition"
+                    >
+                        <MapPin
+                            size={17}
+                            className="text-red-400 shrink-0 mt-0.5"
+                        />
+                        <span>
+                            Savar, Bangladesh
+                            <span className="block text-xs text-blue-400 mt-1">
+                                View on Google Maps →
+                            </span>
+                        </span>
+                    </a>
                 </div>
 
                 {/* POLICIES */}
@@ -63,57 +90,11 @@ const Footer = () => {
                     </h3>
 
                     <ul className="space-y-1">
-
-                        {/* About Us */}
-                        <li>
-                            <Link
-                                to="/about-us"
-                                className="text-blue-400 hover:underline"
-                            >
-                                About Us
-                            </Link>
-                        </li>
-
-                        {/* Privacy Policy */}
-                        <li>
-                            <Link
-                                to="/privacy-policy"
-                                className="text-blue-400 hover:underline"
-                            >
-                                Privacy Policy
-                            </Link>
-                        </li>
-
-                        {/* Ad Policy */}
-                        <li>
-                            <Link
-                                to="/ad-policy"
-                                className="text-blue-400 hover:underline"
-                            >
-                                Ad Policy
-                            </Link>
-                        </li>
-
-                        {/* Terms */}
-                        <li>
-                            <Link
-                                to="/terms"
-                                className="text-blue-400 hover:underline"
-                            >
-                                Terms of Use
-                            </Link>
-                        </li>
-
-                        {/* Contact */}
-                        <li>
-                            <Link
-                                to="/contact"
-                                className="text-blue-400 hover:underline"
-                            >
-                                Contact Us
-                            </Link>
-                        </li>
-
+                        <li><Link to="/about-us" className="text-blue-400 hover:underline">About Us</Link></li>
+                        <li><Link to="/privacy-policy" className="text-blue-400 hover:underline">Privacy Policy</Link></li>
+                        <li><Link to="/ad-policy" className="text-blue-400 hover:underline">Ad Policy</Link></li>
+                        <li><Link to="/terms" className="text-blue-400 hover:underline">Terms of Use</Link></li>
+                        <li><Link to="/contact" className="text-blue-400 hover:underline">Contact Us</Link></li>
                     </ul>
                 </div>
 
@@ -146,4 +127,3 @@ const Footer = () => {
 };
 
 export default Footer;
-
