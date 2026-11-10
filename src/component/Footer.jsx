@@ -64,7 +64,7 @@ const Footer = () => {
                     </p>
 
                     <a
-                        href="https://maps.app.goo.gl/hh4vko7eJn6f6BHV8"
+                        href="https://maps.app.goo.gl/k9v8Mw9qrKWoTtM69"
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="View FastBlog location on Google Maps"
