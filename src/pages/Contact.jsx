@@ -58,7 +58,7 @@ const Contact = () => {
               </p>
 
               <a
-                href="https://maps.app.goo.gl/k9v8Mw9qrKWoTtM69"
+                href="https://maps.app.goo.gl/mL7786j8Snisdk6k8"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="View our location on Google Maps"
