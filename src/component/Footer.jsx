@@ -1,11 +1,12 @@
 
 
+import { useState } from "react";
 import { Link } from "react-router";
+
 import {
     MapPin,
     Mail,
     Heart,
-    Phone,
     ExternalLink,
     ShieldCheck,
     Copy,
@@ -14,38 +15,50 @@ import {
 
 import { FaYoutube, FaFacebook } from "react-icons/fa";
 
-import { useState } from "react";
-
-import AdBox from "./AdBox";
 import brandImage from "/image/brand_logo.png";
 
-
 const Footer = () => {
+    const [copied, setCopied] = useState(false);
 
-    const [copied, setCopied] = useState("");
-
-    // Payment Number
     const paymentNumber = "01617370355";
 
-    // Social Media Links
+    // Payment methods loop
+    const paymentMethods = [
+        {
+            name: "bKash",
+            color: "text-pink-400",
+            bg: "bg-pink-500/10",
+            border: "border-pink-500/30",
+        },
+        {
+            name: "Nagad",
+            color: "text-orange-400",
+            bg: "bg-orange-500/10",
+            border: "border-orange-500/30",
+        },
+        {
+            name: "Rocket",
+            color: "text-purple-400",
+            bg: "bg-purple-500/10",
+            border: "border-purple-500/30",
+        },
+    ];
+
     const socialLinks = [
         {
             name: "YouTube Channel",
             url: "https://www.youtube.com/@WaqiaSobjiGhor",
             icon: FaYoutube,
             color: "text-red-500",
-            hover: "hover:text-red-400",
         },
         {
             name: "Facebook Profile",
             url: "https://web.facebook.com/rhRonyHossen01",
             icon: FaFacebook,
             color: "text-blue-500",
-            hover: "hover:text-blue-400",
         },
     ];
 
-    // Website Policies
     const policies = [
         { name: "About Us", path: "/about-us" },
         { name: "Privacy Policy", path: "/privacy-policy" },
@@ -54,229 +67,186 @@ const Footer = () => {
         { name: "Contact Us", path: "/contact" },
     ];
 
-    // Payment Methods
-    const paymentMethods = [
-        {
-            name: "bKash",
-            color: "text-pink-400",
-            hover: "hover:border-pink-500",
-        },
-        {
-            name: "Nagad",
-            color: "text-orange-400",
-            hover: "hover:border-orange-500",
-        },
-        {
-            name: "Rocket",
-            color: "text-purple-400",
-            hover: "hover:border-purple-500",
-        },
-    ];
-
-    // Copy Payment Number
-    const handleCopy = async (service) => {
+    // Copy payment number
+    const handleCopy = async () => {
         try {
-            await navigator.clipboard.writeText(paymentNumber);
-            setCopied(service);
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(paymentNumber);
+            } else {
+                const textarea = document.createElement("textarea");
+                textarea.value = paymentNumber;
+                textarea.style.position = "fixed";
+                textarea.style.opacity = "0";
+
+                document.body.appendChild(textarea);
+                textarea.select();
+
+                const success = document.execCommand("copy");
+                document.body.removeChild(textarea);
+
+                if (!success) throw new Error("Copy failed");
+            }
+
+            setCopied(true);
 
             setTimeout(() => {
-                setCopied((current) =>
-                    current === service ? "" : current
-                );
+                setCopied(false);
             }, 2000);
 
         } catch (error) {
-            console.error("Unable to copy payment number:", error);
+            console.error("Copy failed:", error);
+            setCopied(false);
         }
     };
 
-
     return (
+        <footer className="mt-10 w-full overflow-hidden bg-gray-900 text-gray-300">
 
-        <footer className="bg-gray-950 text-gray-200 mt-10">
+            {/* MAIN FOOTER */}
+            <div className="mx-auto max-w-7xl px-5 py-12 sm:px-6 lg:px-8">
 
-            {/* FOOTER ADVERTISEMENT */}
-            <div className="max-w-7xl mx-auto px-4 pt-6">
-
-                <AdBox
-                    size="banner"
-                    position="footer"
-                    isAdEnabled={true}
-                />
-
-            </div>
-
-
-            {/* MAIN FOOTER CONTENT */}
-            <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-12">
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-9 lg:gap-8">
-
+                <div className="
+                    grid grid-cols-1 gap-x-8 gap-y-10
+                    sm:grid-cols-2
+                    lg:grid-cols-6
+                    xl:grid-cols-12
+                ">
 
                     {/* BRAND SECTION */}
-                    <div className="flex flex-col items-center sm:items-start">
+                    <div className="min-w-0 sm:col-span-1 lg:col-span-2 xl:col-span-2">
 
-                        <Link to="/" aria-label="FastBlog Home">
-
+                        <Link
+                            to="/"
+                            aria-label="FastBlog Home"
+                            className="inline-block w-full sm:w-auto"
+                        >
                             <img
                                 src={brandImage}
                                 alt="FastBlog Logo"
-                                className="w-40 sm:w-44 md:w-48 h-auto object-contain"
                                 loading="lazy"
+                                className="mx-auto h-auto w-40 object-contain sm:mx-0 sm:w-44"
                             />
-
                         </Link>
 
-                        <p className="text-gray-400 text-sm leading-7 mt-4 text-center sm:text-left">
-
+                        <p className="mt-5 text-center text-sm leading-7 text-gray-400 sm:text-left">
                             FastBlog is your trusted source for technology,
                             Artificial Intelligence, business, education,
                             productivity, lifestyle and more.
-
                         </p>
 
-                        <p className="text-gray-500 text-xs mt-4">
-
+                        <p className="mt-4 text-xs leading-6 text-gray-500">
                             Learn. Explore. Grow with FastBlog.
-
                         </p>
 
                     </div>
 
-
                     {/* ABOUT SECTION */}
-                    <div>
+                    <div className="min-w-0 lg:col-span-2 xl:col-span-2">
 
-                        <h3 className="text-white font-bold text-base mb-4">
-
+                        <h3 className="mb-5 text-base font-bold text-white">
                             About FastBlog
-
                         </h3>
 
-                        <p className="text-gray-400 text-sm leading-7">
-
+                        <p className="text-sm leading-7 text-gray-400">
                             FastBlog is an information platform dedicated
                             to delivering high-quality, accurate and
                             easy-to-understand articles.
 
                             Our mission is to help readers stay informed
                             about the latest technology and AI trends.
-
                         </p>
 
                     </div>
 
-
                     {/* CONTACT & SOCIAL SECTION */}
-                    <div>
+                    <div className="min-w-0 lg:col-span-2 xl:col-span-3">
 
-                        <h3 className="text-white font-bold text-base mb-4">
-
+                        <h3 className="mb-5 text-base font-bold text-white">
                             Contact Us
-
                         </h3>
-
 
                         <div className="space-y-4">
 
                             {/* EMAIL */}
                             <a
                                 href="mailto:malvinjack26@gmail.com"
-                                className="flex items-center gap-3 text-gray-400 hover:text-blue-400 transition min-w-0"
+                                className="
+                                    flex min-w-0 items-center gap-2
+                                    text-gray-400 transition
+                                    hover:text-white
+                                "
                             >
-
                                 <Mail
                                     size={18}
-                                    className="text-blue-400 shrink-0"
+                                    className="shrink-0 text-blue-400"
                                 />
 
-                                <span className="text-sm break-all">
-
+                                <span className="
+                                    whitespace-nowrap
+                                    text-[13px] sm:text-sm
+                                ">
                                     malvinjack26@gmail.com
-
                                 </span>
-
                             </a>
-
 
                             {/* LOCATION */}
                             <a
                                 href="https://maps.app.goo.gl/mL7786j8Snisdk6k8"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                aria-label="View FastBlog location on Google Maps"
-                                className="flex items-start gap-3 text-gray-400 hover:text-blue-400 transition"
+                                className="flex min-w-0 items-start gap-3 text-gray-400 transition hover:text-white"
                             >
-
                                 <MapPin
                                     size={19}
-                                    className="text-red-400 shrink-0"
+                                    className="mt-0.5 shrink-0 text-red-400"
                                 />
 
-                                <span className="text-sm">
-
+                                <span className="min-w-0 text-sm">
                                     Savar, Bangladesh
 
-                                    <span className="block text-xs text-blue-400 mt-1">
-
+                                    <span className="mt-1 block text-xs text-blue-400">
                                         View on Google Maps
-
                                     </span>
-
                                 </span>
 
                                 <ExternalLink
                                     size={13}
-                                    className="shrink-0 mt-1"
+                                    className="mt-1 shrink-0"
                                 />
-
                             </a>
 
                         </div>
 
-
                         {/* SOCIAL MEDIA */}
                         <div className="mt-7">
 
-                            <h3 className="text-white font-bold text-base mb-4">
-
+                            <h3 className="mb-4 text-base font-bold text-white">
                                 Follow Us
-
                             </h3>
 
                             <div className="space-y-4">
 
                                 {socialLinks.map((social) => {
-
                                     const Icon = social.icon;
 
                                     return (
-
                                         <a
                                             key={social.name}
                                             href={social.url}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            aria-label={social.name}
-                                            className={`flex items-center gap-3 text-gray-400 ${social.hover} transition`}
+                                            className="flex items-center gap-3 text-gray-400 transition hover:text-white"
                                         >
-
                                             <Icon
                                                 size={21}
-                                                className={`${social.color} shrink-0`}
-                                                aria-hidden="true"
+                                                className={`shrink-0 ${social.color}`}
                                             />
 
                                             <span className="text-sm">
-
                                                 {social.name}
-
                                             </span>
-
                                         </a>
-
                                     );
-
                                 })}
 
                             </div>
@@ -285,139 +255,155 @@ const Footer = () => {
 
                     </div>
 
+                    {/* IMPORTANT LINKS */}
+                    <div className="min-w-0 lg:col-span-2 xl:col-span-2">
 
-                    {/* POLICIES SECTION */}
-                    <div>
-
-                        <h3 className="text-white font-bold text-base mb-4">
-
+                        <h3 className="mb-5 text-base font-bold text-white">
                             Important Links
-
                         </h3>
 
-                        <ul className="space-y-3">
+                        <ul className="space-y-4">
 
                             {policies.map((item) => (
-
                                 <li key={item.path}>
-
                                     <Link
                                         to={item.path}
-                                        className="text-gray-400 text-sm hover:text-blue-400 hover:translate-x-1 inline-block transition-all"
+                                        className="
+                                            inline-block text-sm
+                                            text-gray-400
+                                            transition-all duration-200
+                                            hover:translate-x-1
+                                            hover:text-blue-400
+                                        "
                                     >
-
                                         {item.name}
-
                                     </Link>
-
                                 </li>
-
                             ))}
 
                         </ul>
 
                     </div>
 
+                    {/* SUPPORT / DONATION */}
+                    <div className="min-w-0 lg:col-span-2 xl:col-span-3">
 
-                    {/* DONATION SECTION */}
-                    <div>
-
-                        <h3 className="text-white font-bold text-base mb-4 flex items-center gap-2">
+                        <h3 className="mb-5 flex items-center gap-2 text-base font-bold text-white">
 
                             <Heart
-                                size={18}
-                                className="text-pink-500"
+                                size={19}
+                                className="shrink-0 text-pink-500"
                             />
 
                             Support / Donate
 
                         </h3>
 
-
-                        <p className="text-gray-400 text-sm leading-6 mb-4">
-
+                        <p className="mb-5 text-sm leading-6 text-gray-400">
                             Support FastBlog to help us maintain,
                             improve and develop our website.
-
                         </p>
 
-
                         {/* PAYMENT CARD */}
-                        <div className="bg-gray-900 border border-gray-800 rounded-xl p-4 space-y-4">
+                        <div className="
+                            w-full min-w-0 rounded-xl
+                            border border-gray-700
+                            bg-gray-800/70 p-4
+                        ">
 
-                            {paymentMethods.map((method) => (
+                            {/* PAYMENT METHODS LOOP */}
+                            <div className="grid grid-cols-3 gap-2">
 
-                                <div
-                                    key={method.name}
-                                    className={`border border-gray-800 rounded-lg p-3 transition ${method.hover}`}
-                                >
-
-                                    <div className="flex items-center justify-between gap-2">
-
-                                        <div className="min-w-0">
-
-                                            <p className={`font-bold text-sm ${method.color}`}>
-
-                                                {method.name}
-
-                                            </p>
-
-                                            <p className="text-white font-semibold text-sm mt-1">
-
-                                                {paymentNumber}
-
-                                            </p>
-
-                                        </div>
-
-
-                                        {/* COPY BUTTON */}
-                                        <button
-                                            type="button"
-                                            onClick={() => handleCopy(method.name)}
-                                            aria-label={`Copy ${method.name} payment number`}
-                                            title={`Copy ${method.name} number`}
-                                            className="flex items-center justify-center gap-1 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white rounded-lg px-2 py-2 text-xs transition shrink-0"
-                                        >
-
-                                            {copied === method.name ? (
-
-                                                <>
-                                                    <Check size={15} />
-                                                    Copied
-                                                </>
-
-                                            ) : (
-
-                                                <>
-                                                    <Copy size={15} />
-                                                    Copy
-                                                </>
-
-                                            )}
-
-                                        </button>
-
+                                {paymentMethods.map((method) => (
+                                    <div
+                                        key={method.name}
+                                        className={`
+                                            flex min-w-0 items-center
+                                            justify-center rounded-lg
+                                            border ${method.border}
+                                            ${method.bg}
+                                            px-1 py-2.5
+                                        `}
+                                    >
+                                        <span className={`
+                                            text-xs font-bold sm:text-sm
+                                            ${method.color}
+                                        `}>
+                                            {method.name}
+                                        </span>
                                     </div>
+                                ))}
+
+                            </div>
+
+                            {/* SINGLE PAYMENT NUMBER BOX */}
+                            <div className="
+                                mt-4 flex min-w-0 items-center
+                                justify-between gap-2
+                                rounded-lg border border-gray-700
+                                bg-gray-900/80 p-3 sm:p-4
+                            ">
+
+                                <div className="min-w-0">
+
+                                    <p className="mb-1 text-xs text-gray-400">
+                                        Payment Number
+                                    </p>
+
+                                    <p className="
+                                        whitespace-nowrap
+                                        text-base font-bold
+                                        tracking-wider text-white
+                                        sm:text-lg
+                                    ">
+                                        {paymentNumber}
+                                    </p>
 
                                 </div>
 
-                            ))}
+                                <button
+                                    type="button"
+                                    onClick={handleCopy}
+                                    aria-label="Copy payment number"
+                                    className={`
+                                        flex min-h-10 shrink-0
+                                        items-center justify-center
+                                        gap-1.5 rounded-lg px-3
+                                        text-xs font-semibold
+                                        transition duration-200
+                                        active:scale-95
+                                        ${copied
+                                            ? "bg-green-600 text-white"
+                                            : "bg-gray-800 text-gray-200 hover:bg-gray-700"
+                                        }
+                                    `}
+                                >
+
+                                    {copied ? (
+                                        <>
+                                            <Check size={14} />
+                                            Copied
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Copy size={14} />
+                                            Copy
+                                        </>
+                                    )}
+
+                                </button>
+
+                            </div>
+
+                            <p className="mt-3 text-center text-xs leading-5 text-gray-400">
+                                Send your support through any of the
+                                payment methods above.
+                            </p>
 
                         </div>
 
-
-                        <p className="text-gray-500 text-xs leading-5 mt-3">
-
-                            Please support us for website maintenance
-                            and development.
-
-                        </p>
-
-                        <p className="text-yellow-500 text-xs mt-2">
-
+                        <p className="mt-4 text-xs font-medium text-yellow-400">
                             Personal number – No phone calls.
-
                         </p>
 
                     </div>
@@ -426,63 +412,66 @@ const Footer = () => {
 
             </div>
 
-
             {/* TRUST SECTION */}
             <div className="border-t border-gray-800">
 
-                <div className="max-w-7xl mx-auto px-5 py-5 flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
+                <div className="
+                    mx-auto flex max-w-7xl
+                    flex-col items-center justify-center
+                    gap-3 px-5 py-5 text-center
+                    sm:flex-row
+                ">
 
                     <ShieldCheck
                         size={17}
-                        className="text-green-400 shrink-0"
+                        className="shrink-0 text-green-400"
                     />
 
-                    <p className="text-gray-500 text-xs leading-5">
-
+                    <p className="text-xs leading-5 text-gray-500">
                         Thank you for supporting FastBlog.
                         Your support helps us grow.
-
                     </p>
 
                 </div>
 
             </div>
 
+            {/* COPYRIGHT SECTION */}
+            <div className="border-t border-gray-800 bg-gray-950/40">
 
-            {/* COPYRIGHT */}
-            <div className="border-t border-gray-800 bg-black/30">
+                <div className="
+                    mx-auto flex max-w-7xl
+                    flex-col items-center justify-between
+                    gap-3 px-5 py-5
+                    sm:flex-row
+                ">
 
-                <div className="max-w-7xl mx-auto px-5 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
-
-                    <p className="text-gray-500 text-xs text-center">
+                    <p className="text-center text-xs text-gray-500">
 
                         © {new Date().getFullYear()}{" "}
 
                         <Link
                             to="/"
-                            className="text-blue-400 font-semibold hover:text-blue-300 transition"
+                            className="font-semibold text-blue-400 transition hover:text-blue-300"
                         >
-
                             FastBlog
-
                         </Link>
 
                         . All rights reserved.
 
                     </p>
 
+                    <p className="flex items-center gap-1 text-center text-xs text-gray-500">
 
-                    <p className="text-gray-500 text-xs text-center">
-
-                        Made with{" "}
+                        Made with
 
                         <Heart
                             size={12}
-                            className="inline text-red-500"
                             fill="currentColor"
+                            className="text-red-500"
                         />
 
-                        {" "}for readers worldwide.
+                        for readers worldwide.
 
                     </p>
 
@@ -491,9 +480,7 @@ const Footer = () => {
             </div>
 
         </footer>
-
     );
-
 };
 
 export default Footer;
